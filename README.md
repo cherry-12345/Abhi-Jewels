@@ -1,5 +1,7 @@
 # AJ Abhi Jewels - Enterprise E-commerce Platform
 
+![CI](https://github.com/cherry-12345/Abhi-Jewels/actions/workflows/ci.yml/badge.svg)
+
 A modern, full-featured jewelry e-commerce website built with Next.js 14, TypeScript, and Tailwind CSS.
 
 ## 🌟 Features
