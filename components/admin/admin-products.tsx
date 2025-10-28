@@ -63,7 +63,11 @@ export function AdminProducts() {
       name: formData.name.trim(),
       material: formData.material.trim(),
       description: formData.description.trim(),
-      certification: formData.certification.trim()
+      certification: formData.certification.trim(),
+      tags: [],
+      featured: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     }
     
     addProduct(sanitizedData)

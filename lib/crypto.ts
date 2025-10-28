@@ -31,7 +31,7 @@ export class CryptoManager {
     combined.set(iv)
     combined.set(new Uint8Array(encrypted), iv.length)
 
-    return btoa(String.fromCharCode(...combined))
+    return btoa(String.fromCharCode(...Array.from(combined)))
   }
 
   static async decrypt(encryptedData: string): Promise<string> {

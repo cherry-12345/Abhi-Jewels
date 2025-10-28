@@ -77,7 +77,7 @@ export class JWTManager {
   private static base64UrlEncode(data: string | Uint8Array): string {
     const base64 = typeof data === 'string' 
       ? btoa(data) 
-      : btoa(String.fromCharCode(...data))
+      : btoa(String.fromCharCode(...Array.from(data)))
     
     return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
   }
