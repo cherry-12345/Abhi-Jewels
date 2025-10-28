@@ -8,15 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
-    "db:seed": "node prisma/seed.js",
-    "server": "node api/server.js",
-    "dev:server": "nodemon api/server.js",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "next": "^14.0.0",
@@ -39,20 +31,7 @@
     "tailwind-merge": "^2.0.0",
     "react-hot-toast": "^2.4.0",
     "next-themes": "^0.2.0",
-    "sharp": "^0.32.0",
-    "express": "^4.18.0",
-    "@prisma/client": "^5.0.0",
-    "prisma": "^5.0.0",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.0",
-    "cors": "^2.8.5",
-    "helmet": "^7.0.0",
-    "express-rate-limit": "^6.8.0",
-    "compression": "^1.7.4",
-    "razorpay": "^2.9.0",
-    "nodemailer": "^6.9.0",
-    "redis": "^4.6.0",
-    "aws-sdk": "^2.1400.0"
+    "sharp": "^0.32.0"
   },
   "devDependencies": {
     "eslint": "^8.0.0",
