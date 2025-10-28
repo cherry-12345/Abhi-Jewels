@@ -1,21 +1,15 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { TrendingUp, Package, ShoppingCart, Users, DollarSign, Eye, Plus, Edit, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useProductStore } from '@/store/products'
-import { useAuthStore } from '@/store/auth'
 import { formatPrice } from '@/lib/utils'
-import { AdminHeader } from './admin-header'
-import { AdminSidebar } from './admin-sidebar'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
 
 export function AdminDashboard() {
-  const { isAuthenticated, checkAuth, validateSession, refreshToken, logout } = useAuthStore()
   const { products, deleteProduct } = useProductStore()
-  const router = useRouter()
   
   const [stats, setStats] = useState({
     totalProducts: 0,
@@ -25,33 +19,6 @@ export function AdminDashboard() {
     lowStockItems: 0,
     pendingOrders: 23
   })
-
-  useEffect(() => {
-    const validateAndRefresh = async () => {
-      if (!isAuthenticated || !checkAuth()) {
-        router.push('/admin')
-        return
-      }
-      
-      // Validate session and refresh token if needed
-      const isValid = await validateSession()
-      if (!isValid) {
-        logout()
-        router.push('/admin')
-        return
-      }
-      
-      // Auto-refresh token
-      await refreshToken()
-    }
-    
-    validateAndRefresh()
-    
-    // Set up periodic session validation
-    const interval = setInterval(validateAndRefresh, 5 * 60 * 1000) // Every 5 minutes
-    
-    return () => clearInterval(interval)
-  }, [isAuthenticated, checkAuth, validateSession, refreshToken, logout, router])
 
   useEffect(() => {
     const totalProducts = products.length
@@ -71,10 +38,6 @@ export function AdminDashboard() {
       deleteProduct(productId)
       toast.success('Product deleted successfully')
     }
-  }
-
-  if (!isAuthenticated) {
-    return null
   }
 
   const statCards = [
@@ -113,12 +76,7 @@ export function AdminDashboard() {
   ]
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <AdminSidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <AdminHeader />
-        <main className="flex-1 overflow-y-auto p-6">
-          <div className="space-y-6">
+    <div className="space-y-6">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
               <p className="text-gray-600">Welcome back! Here's what's happening with your store.</p>
@@ -247,9 +205,6 @@ export function AdminDashboard() {
                 </table>
               </div>
             </div>
-          </div>
-        </main>
-      </div>
     </div>
   )
 }
