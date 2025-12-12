@@ -51,6 +51,15 @@ function isRateLimited(key: string): boolean {
   const windowMs = 15 * 60 * 1000 // 15 minutes
   const maxRequests = 100
 
+  // Cleanup expired entries to prevent memory leak
+  if (rateLimitMap.size > 1000) {
+    for (const [k, v] of rateLimitMap.entries()) {
+      if (now > v.resetTime) {
+        rateLimitMap.delete(k)
+      }
+    }
+  }
+
   const record = rateLimitMap.get(key)
   
   if (!record || now > record.resetTime) {
