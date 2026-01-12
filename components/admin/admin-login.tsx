@@ -133,11 +133,16 @@ export function AdminLogin() {
           </Button>
         </form>
 
-        <div className="mt-6 p-4 bg-gold-50 rounded-lg">
-          <p className="text-sm text-gold-700 font-medium mb-2">Demo Credentials:</p>
-          <p className="text-xs text-gold-600">Email: admin@ajabhijewels.com</p>
-          <p className="text-xs text-gold-600">Password: admin123</p>
-        </div>
+        {process.env.NODE_ENV === 'development' && (
+          <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-sm text-amber-800 font-medium mb-2">🔧 Development Mode:</p>
+            <p className="text-xs text-amber-700">Email: admin@ajabhijewels.com</p>
+            <p className="text-xs text-amber-700">Password: admin123</p>
+            <p className="text-xs text-amber-600 mt-2 italic">
+              ⚠️ These credentials are only visible in development mode
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )

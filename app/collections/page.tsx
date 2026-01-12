@@ -1,16 +1,57 @@
+'use client'
+
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { CartSidebar } from '@/components/cart/cart-sidebar'
 import { ProductGrid } from '@/components/product/product-grid'
 import { FilterSidebar } from '@/components/product/filter-sidebar'
 import { allProducts, categories } from '@/lib/data'
-
-export const metadata = {
-  title: 'Jewelry Collections - AJ Abhi Jewels',
-  description: 'Explore our complete collection of premium jewelry including rings, necklaces, earrings, and bridal sets.',
-}
+import { useMemo, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 export default function CollectionsPage() {
+  const searchParams = useSearchParams()
+  const queryParam = searchParams.get('q')?.toLowerCase() || ''
+
+  const [filters, setFilters] = useState({
+    categories: [] as string[],
+    materials: [] as string[],
+    priceRange: [0, 500000] as [number, number],
+    minRating: 0,
+  })
+
+  const categoryIdToName = useMemo(() => {
+    const map = new Map<string, string>()
+    categories.forEach(cat => map.set(cat.id, cat.name))
+    return map
+  }, [])
+
+  const filteredProducts = useMemo(() => {
+    return allProducts.filter((product) => {
+      const categoryMatches =
+        filters.categories.length === 0 ||
+        filters.categories.some((id) => categoryIdToName.get(id) === product.category)
+
+      const materialMatches =
+        filters.materials.length === 0 ||
+        filters.materials.some((mat) => product.material?.toLowerCase().includes(mat.toLowerCase()))
+
+      const priceMatches =
+        product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1]
+
+      const ratingMatches = product.rating >= filters.minRating
+
+      const searchMatches =
+        !queryParam ||
+        product.name.toLowerCase().includes(queryParam) ||
+        product.description.toLowerCase().includes(queryParam) ||
+        product.category.toLowerCase().includes(queryParam) ||
+        product.material.toLowerCase().includes(queryParam)
+
+      return categoryMatches && materialMatches && priceMatches && ratingMatches && searchMatches
+    })
+  }, [filters, queryParam, categoryIdToName])
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -27,10 +68,22 @@ export default function CollectionsPage() {
           
           <div className="flex flex-col lg:flex-row gap-8">
             <aside className="lg:w-64 flex-shrink-0">
-              <FilterSidebar categories={categories} />
+              <FilterSidebar
+                categories={categories}
+                value={filters}
+                onChange={setFilters}
+                onClear={() => {
+                  setFilters({
+                    categories: [],
+                    materials: [],
+                    priceRange: [0, 500000],
+                    minRating: 0,
+                  })
+                }}
+              />
             </aside>
             <div className="flex-1">
-              <ProductGrid products={allProducts} />
+              <ProductGrid products={filteredProducts} />
             </div>
           </div>
         </div>

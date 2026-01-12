@@ -1,0 +1,501 @@
+[
+  {
+    "id": "TC001",
+    "title": "Verify landing page loads with featured sections",
+    "description": "Check that the landing page loads successfully and displays all featured sections including hero, featured products, testimonials, categories, and Instagram feed.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the landing page URL"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify hero section is visible with appropriate content"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify featured products section displays correct products"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify testimonials section displays customer testimonials"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify categories section lists all jewelry categories"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify Instagram feed section loads images dynamically"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Product browsing with category filtering and search",
+    "description": "Validate that users can browse products by categories, apply filters, and use the smart search function to find products.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to a product collections page"
+      },
+      {
+        "type": "action",
+        "description": "Select a category filter from the filter sidebar"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify only products from the selected category are displayed"
+      },
+      {
+        "type": "action",
+        "description": "Enter a search term in the smart search input"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify search results dynamically update to match the search term"
+      },
+      {
+        "type": "action",
+        "description": "Clear filters and search"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify full product grid is restored"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Display product details and related products",
+    "description": "Ensure that product detail pages load correct product information, images, specifications, and show relevant related products.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to a specific product detail page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify multiple product images load correctly and can be previewed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify product specifications and certifications are correctly displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify related products section shows relevant products"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Add and remove items from shopping cart with real-time updates",
+    "description": "Validate that adding and removing products from the shopping cart updates the cart instantly, and that the cart sidebar displays current state.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to a product detail page and add item to cart"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify cart sidebar updates immediately with the new item and quantity"
+      },
+      {
+        "type": "action",
+        "description": "Increase item quantity using cart controls"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify cart totals and item quantity update instantly"
+      },
+      {
+        "type": "action",
+        "description": "Remove item from cart"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the item is removed and cart updates immediately"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Wishlist functionality with persistence",
+    "description": "Check that users can add and remove items from the wishlist and that wishlist state persists across sessions using local storage.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Add a product to wishlist from product grid or detail page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify product appears in wishlist page and icon state updates everywhere"
+      },
+      {
+        "type": "action",
+        "description": "Remove product from wishlist"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify product is removed from wishlist page and icon state updates"
+      },
+      {
+        "type": "action",
+        "description": "Reload the browser or revisit the site"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify wishlist state remains consistent with previous session"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Checkout process with validation and payment options",
+    "description": "Verify the checkout flow requires valid contact and shipping information, supports multiple payment methods, and completes the order successfully.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Add products to cart and proceed to checkout page"
+      },
+      {
+        "type": "action",
+        "description": "Fill in contact and shipping information with valid data"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify form validation passes with valid inputs"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to submit checkout with invalid or missing data"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify validation errors are shown with clear messages"
+      },
+      {
+        "type": "action",
+        "description": "Select each available payment method and confirm payment process"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify order confirmation page is displayed after successful payment"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Admin authentication with JWT, password hashing, and rate limiting",
+    "description": "Ensure admin login enforces SHA-256 password hashing, JWT token issuance with session expiration, and rate limiting on repeated failed login attempts.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Attempt to login with correct admin credentials"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify successful login and JWT token is issued with proper expiry"
+      },
+      {
+        "type": "action",
+        "description": "Logout and attempt login with invalid password multiple times consecutively"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify login attempts are rate limited after threshold is exceeded"
+      },
+      {
+        "type": "action",
+        "description": "Verify password in transit and storage is SHA-256 hashed"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Admin console product CRUD operations",
+    "description": "Validate that admin users can create, read, update, and delete products with proper data validation and image uploads.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Log in to admin console and navigate to products management"
+      },
+      {
+        "type": "action",
+        "description": "Create a new product with all required details and upload images"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify product is listed with correct information and images"
+      },
+      {
+        "type": "action",
+        "description": "Update existing product details and images"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify updates are saved and reflected correctly"
+      },
+      {
+        "type": "action",
+        "description": "Delete a product from the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify product is removed from the product list"
+      },
+      {
+        "type": "action",
+        "description": "Attempt product creation with invalid or incomplete data"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify validation errors prevent product creation"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "SEO utilities generate correct metadata, sitemap, and robots.txt",
+    "description": "Check that SEO features produce accurate meta tags on pages, and that sitemap.xml and robots.txt files are correctly generated and accessible.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Load a product detail page and inspect meta tags"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify metadata includes correct title, description, and relevant structured data"
+      },
+      {
+        "type": "action",
+        "description": "Request sitemap.xml endpoint"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify sitemap XML contains URLs for all relevant pages"
+      },
+      {
+        "type": "action",
+        "description": "Request robots.txt endpoint"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify robots.txt contains appropriate rules for search engines"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Responsive design across devices and screen sizes",
+    "description": "Verify that the entire platform UI renders and functions correctly on multiple screen sizes including mobile, tablet, desktop, and large screens using the luxury color palette and typography.",
+    "category": "ui",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Access the storefront on a mobile phone viewport"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify layout adjusts properly with accessible navigation and readable fonts"
+      },
+      {
+        "type": "action",
+        "description": "Access on a tablet viewport"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify UI elements scale appropriately with no overlap or truncation"
+      },
+      {
+        "type": "action",
+        "description": "Access on desktop and large desktop viewports"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify full site features visible and styling follows brand palette and typography"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Error boundaries capture and display component errors",
+    "description": "Test that UI error boundary components correctly catch runtime errors in child components and display fallback UI to users.",
+    "category": "error handling",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Induce an error inside a child React component (e.g. throw in componentDidMount)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify error boundary catches the error and shows fallback UI instead of crashing the entire app"
+      },
+      {
+        "type": "action",
+        "description": "Verify error details are logged or reported as per implementation"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "User forms validate input with clear error messages",
+    "description": "Check that login, checkout, and other user input forms properly validate data using zod schemas and react-hook-form, presenting clear and accessible error messages.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open login or checkout form"
+      },
+      {
+        "type": "action",
+        "description": "Submit empty or invalid inputs"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify error messages appear next to invalid fields describing the required fix"
+      },
+      {
+        "type": "action",
+        "description": "Fill inputs with valid data and submit"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no validation errors and form submits successfully"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Cart and wishlist state persistence with local storage and Zustand store",
+    "description": "Ensure that cart and wishlist states are synchronized between Zustand global store and browser local storage and persist across user reloads.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Add items to cart and wishlist"
+      },
+      {
+        "type": "action",
+        "description": "Reload the page or close and reopen the browser"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify cart and wishlist contents are restored correctly from local storage"
+      },
+      {
+        "type": "action",
+        "description": "Modify cart and wishlist and simultaneously inspect Zustand store state"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify local storage and Zustand store states remain in sync"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Modern UX enhancements function as expected",
+    "description": "Validate that UX enhancements such as lazy loading images, smooth scrolling, back-to-top button, live chat popup, newsletter popup, and loading skeletons activate and function correctly.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Scroll through product lists and verify that images are lazy loaded progressively"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm smooth scroll behavior when using navigation links"
+      },
+      {
+        "type": "action",
+        "description": "Scroll down the page and click back-to-top button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify page scrolls smoothly back to top"
+      },
+      {
+        "type": "action",
+        "description": "Trigger live chat popup by user interaction or timer"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify live chat UI displays and can send/receive messages"
+      },
+      {
+        "type": "action",
+        "description": "Observe newsletter popup on page load or scroll"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify popup appears and can close or submit newsletter form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate various pages and observe loading skeletons"
+      },
+      {
+        "type": "assertion",
+        "description": "Ensure loading states display skeleton components correctly"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Critical user flows covered by unit, integration, and E2E tests",
+    "description": "Confirm that code coverage meets specified thresholds by running unit, integration, and end-to-end tests across critical paths like login, product browsing, cart, and checkout.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Run all unit tests and verify coverage report"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify unit test coverage meets or exceeds defined threshold (e.g., 80%)"
+      },
+      {
+        "type": "action",
+        "description": "Run integration tests covering components interaction (e.g., product filtering and cart state)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify integration tests pass and coverage threshold met"
+      },
+      {
+        "type": "action",
+        "description": "Run end-to-end (E2E) tests simulating critical user flows"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify E2E tests pass reliably covering login, purchase, admin tasks"
+      }
+    ]
+  }
+]

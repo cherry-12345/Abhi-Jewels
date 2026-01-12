@@ -1,0 +1,205 @@
+{
+  "meta": {
+    "project": "AJ Abhi Jewels E-commerce Platform",
+    "date": "2025-12-10",
+    "prepared_by": "Software Development Manager"
+  },
+  "product_overview": "AJ Abhi Jewels is a premium online jewelry e-commerce platform built on modern web technologies including Next.js 14, TypeScript, and Tailwind CSS, designed to offer a luxurious and seamless shopping experience for customers while providing comprehensive admin tools for store management.",
+  "core_goals": [
+    "Deliver a seamless, high-performance online jewelry shopping experience",
+    "Showcase premium, categorized jewelry collections with detailed product information",
+    "Ensure secure and smooth checkout with multiple payment options",
+    "Enable efficient wishlist and cart management with real-time updates",
+    "Provide a robust admin console for product, order, customer, and analytics management",
+    "Incorporate strong security measures including JWT authentication and rate limiting",
+    "Implement SEO best practices for high search engine visibility",
+    "Leverage modern UX enhancements for superior user engagement and performance"
+  ],
+  "key_features": [
+    "Intuitive Product Browsing with categories, filtering, and smart search",
+    "Dynamic Product Detail Pages showcasing multiple images, specs, and related products",
+    "Shopping Cart with instant updates and sidebar quick view",
+    "Wishlist functionality with easy item management and persistence",
+    "Secure Checkout supporting contact info, shipping, and multiple payment methods",
+    "Comprehensive Admin Console with dashboard, analytics, and CRUD operations",
+    "Authentication system with JWT tokens, SHA-256 password hashing, and session management",
+    "Modern UX enhancements: lazy loading images, smooth scroll, live chat, newsletter popup",
+    "SEO utilities including sitemap, robots.txt, and metadata management",
+    "Responsive design with luxury color palette and typography optimized for jewelry brand"
+  ],
+  "user_flow_summary": [
+    "User visits landing page to explore featured collections and products",
+    "User browses product categories, filters and searches for desired jewelry items",
+    "User views detailed product pages with specifications, certifications, and related products",
+    "User adds products to cart or wishlist for later purchase",
+    "User proceeds to checkout entering contact, shipping, and payment details",
+    "User completes order and receives confirmation",
+    "Admin logs in via secure authentication and accesses dashboard",
+    "Admin manages products, orders, customers, and views analytics",
+    "Admin updates store settings and monitors system health"
+  ],
+  "validation_criteria": [
+    "All pages conform to performance targets including Fast Contentful Paint and low input delay",
+    "Cart and wishlist states persist correctly using local storage and Zustand store",
+    "User forms (checkout, login) validate input data with clear error messages using zod and react-hook-form",
+    "Admin authentication enforces rate limiting, JWT session expiry, and password security",
+    "Product CRUD operations succeed with proper data validation and image uploads",
+    "SEO features generate correct meta tags, sitemap, and robots.txt files",
+    "Responsive design verified across mobile, tablet, desktop, and large screens",
+    "Error boundaries effectively capture and display component errors",
+    "Critical paths covered by unit, integration, and E2E tests with specified coverage thresholds"
+  ],
+  "code_summary": {
+    "tech_stack": [
+      "TypeScript",
+      "Next.js 14 (App Router)",
+      "React 18",
+      "Tailwind CSS",
+      "Zustand",
+      "react-hook-form",
+      "zod",
+      "framer-motion",
+      "lucide-react"
+    ],
+    "features": [
+      {
+        "name": "Core app shell and routing",
+        "description": "Next.js App Router setup with global layout, providers, and styling for the storefront.",
+        "files": [
+          "app/layout.tsx",
+          "app/providers.tsx",
+          "app/globals.css",
+          "app/page.tsx",
+          "app/error.tsx",
+          "app/loading.tsx"
+        ]
+      },
+      {
+        "name": "Home experience",
+        "description": "Landing page sections for hero, featured products, testimonials, categories, and Instagram feed.",
+        "files": [
+          "app/page.tsx",
+          "components/home/hero-section.tsx",
+          "components/home/featured-products.tsx",
+          "components/home/category-showcase.tsx",
+          "components/home/testimonials.tsx",
+          "components/home/instagram-feed.tsx",
+          "components/home/why-choose-us.tsx"
+        ]
+      },
+      {
+        "name": "Product browsing and detail",
+        "description": "Product grids, filters, comparison, quick view, and product detail pages including related items.",
+        "files": [
+          "app/collections/page.tsx",
+          "app/collections/*/page.tsx",
+          "app/products/[id]/page.tsx",
+          "components/product/product-grid.tsx",
+          "components/product/filter-sidebar.tsx",
+          "components/product/product-card.tsx",
+          "components/product/product-detail.tsx",
+          "components/product/related-products.tsx",
+          "components/modern/product-comparison.tsx",
+          "components/modern/product-quick-view.tsx"
+        ]
+      },
+      {
+        "name": "Cart and checkout",
+        "description": "Cart sidebar/content flows, checkout page, and Zustand store for cart state.",
+        "files": [
+          "app/cart/page.tsx",
+          "app/checkout/page.tsx",
+          "components/cart/cart-content.tsx",
+          "components/cart/cart-sidebar.tsx",
+          "store/cart.ts"
+        ]
+      },
+      {
+        "name": "Wishlist",
+        "description": "Wishlist page and global state management for saved products.",
+        "files": [
+          "app/wishlist/page.tsx",
+          "store/wishlist.ts"
+        ]
+      },
+      {
+        "name": "Account and authentication",
+        "description": "Account dashboard view plus auth helpers and state for user sessions.",
+        "files": [
+          "app/account/page.tsx",
+          "components/account/account-dashboard.tsx",
+          "store/auth.ts",
+          "lib/jwt.ts",
+          "lib/security.ts"
+        ]
+      },
+      {
+        "name": "Admin console",
+        "description": "Admin area with dashboard, analytics, customers, orders, products, settings, and login experience.",
+        "files": [
+          "app/admin/page.tsx",
+          "app/admin/layout.tsx",
+          "app/admin/dashboard/page.tsx",
+          "app/admin/analytics/page.tsx",
+          "app/admin/customers/page.tsx",
+          "app/admin/orders/page.tsx",
+          "app/admin/products/page.tsx",
+          "app/admin/settings/page.tsx",
+          "components/admin/admin-dashboard.tsx",
+          "components/admin/admin-analytics.tsx",
+          "components/admin/admin-customers.tsx",
+          "components/admin/admin-orders.tsx",
+          "components/admin/admin-products.tsx",
+          "components/admin/admin-settings.tsx",
+          "components/admin/admin-login.tsx",
+          "components/admin/admin-sidebar.tsx",
+          "components/admin/admin-header.tsx"
+        ]
+      },
+      {
+        "name": "UI foundation",
+        "description": "Shared layout and UI primitives including header/footer, buttons, client-only utilities, and error boundaries.",
+        "files": [
+          "components/layout/header.tsx",
+          "components/layout/footer.tsx",
+          "components/ui/button.tsx",
+          "components/ui/client-only.tsx",
+          "components/ui/error-boundary.tsx"
+        ]
+      },
+      {
+        "name": "Modern UX enhancements",
+        "description": "Experience enhancers like lazy loading images, smooth scroll, back-to-top, smart search, live chat, newsletter popup, and loading skeletons.",
+        "files": [
+          "components/modern/lazy-image.tsx",
+          "components/modern/smooth-scroll.tsx",
+          "components/modern/back-to-top.tsx",
+          "components/modern/smart-search.tsx",
+          "components/modern/live-chat.tsx",
+          "components/modern/newsletter-popup.tsx",
+          "components/modern/loading-skeleton.tsx"
+        ]
+      },
+      {
+        "name": "SEO and metadata",
+        "description": "SEO utilities and routes for sitemap and robots plus Next config for metadata.",
+        "files": [
+          "lib/seo.ts",
+          "app/sitemap.xml/route.ts",
+          "app/robots.txt/route.ts",
+          "next.config.js"
+        ]
+      },
+      {
+        "name": "Utilities, data, and hooks",
+        "description": "Helper utilities, mock data, crypto helpers, and custom hooks used across the app.",
+        "files": [
+          "lib/utils.ts",
+          "lib/data.ts",
+          "lib/crypto.ts",
+          "hooks/use-intersection-observer.ts"
+        ]
+      }
+    ]
+  }
+}

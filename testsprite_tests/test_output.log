@@ -1,0 +1,24 @@
+
+Traceback (most recent call last):
+[95m[1m================================================================================[0m
+[95m[1m                     TestSprite Test Suite - AJ Abhi Jewels                     [0m
+[95m[1m================================================================================[0m
+
+[1mChecking if dev server is running...[0m
+  File "E:\Projects\abhi jewels\testsprite_tests\run_all_tests.py", line 202, in <module>
+    asyncio.run(main())
+  File "C:\Users\Windows 10\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Windows 10\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Windows 10\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "E:\Projects\abhi jewels\testsprite_tests\run_all_tests.py", line 167, in main
+    print(f"{Colors.OKGREEN}\u2713 Dev server is running{Colors.ENDC}\n")
+  File "C:\Users\Windows 10\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2713' in position 5: character maps to <undefined>

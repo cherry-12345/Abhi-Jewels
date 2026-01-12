@@ -2,6 +2,26 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  
+  // Admin Panel Protection
+  if (pathname.startsWith('/admin') && pathname !== '/admin') {
+    // Check for authentication token
+    const authToken = request.cookies.get('admin_auth_token')?.value
+    
+    // In production, verify JWT token against ADMIN_SECRET environment variable
+    if (process.env.NODE_ENV === 'production') {
+      const adminSecret = process.env.ADMIN_SECRET
+      
+      // If no admin secret is set or token doesn't match, redirect to admin login
+      if (!adminSecret || !authToken || authToken !== adminSecret) {
+        const loginUrl = request.nextUrl.clone()
+        loginUrl.pathname = '/admin'
+        return NextResponse.redirect(loginUrl)
+      }
+    }
+  }
+  
   const response = NextResponse.next()
 
   // Content Security Policy
@@ -27,8 +47,8 @@ export function middleware(request: NextRequest) {
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
 
-  // Rate limiting for admin routes
-  if (request.nextUrl.pathname.startsWith('/admin')) {
+  // Rate limiting for admin routes only
+  if (pathname.startsWith('/admin')) {
     const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown'
     const key = `admin_${ip}`
     

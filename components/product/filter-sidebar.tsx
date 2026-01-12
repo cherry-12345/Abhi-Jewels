@@ -7,14 +7,18 @@ import { Button } from '@/components/ui/button'
 
 interface FilterSidebarProps {
   categories: Category[]
+  value: {
+    categories: string[]
+    materials: string[]
+    priceRange: [number, number]
+    minRating: number
+  }
+  onChange: (value: FilterSidebarProps['value']) => void
+  onClear?: () => void
 }
 
-export function FilterSidebar({ categories }: FilterSidebarProps) {
+export function FilterSidebar({ categories, value, onChange, onClear }: FilterSidebarProps) {
   const [expandedSections, setExpandedSections] = useState<string[]>(['categories', 'price'])
-  const [priceRange, setPriceRange] = useState([0, 500000])
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [selectedMaterials, setSelectedMaterials] = useState<string[]>([])
-  const [minRating, setMinRating] = useState(0)
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev => 
@@ -49,12 +53,18 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
                 <input
                   type="checkbox"
                   className="rounded border-gray-300 text-gold-500 focus:ring-gold-500"
-                  checked={selectedCategories.includes(category.id)}
+                  checked={value.categories.includes(category.id)}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setSelectedCategories([...selectedCategories, category.id])
+                      onChange({
+                        ...value,
+                        categories: [...value.categories, category.id]
+                      })
                     } else {
-                      setSelectedCategories(selectedCategories.filter(id => id !== category.id))
+                      onChange({
+                        ...value,
+                        categories: value.categories.filter(id => id !== category.id)
+                      })
                     }
                   }}
                 />
@@ -85,16 +95,22 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
               <input
                 type="number"
                 placeholder="Min"
-                value={priceRange[0]}
-                onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
+                value={value.priceRange[0]}
+                onChange={(e) => {
+                  const nextRange: [number, number] = [Number(e.target.value), value.priceRange[1]]
+                  onChange({ ...value, priceRange: nextRange })
+                }}
                 className="w-full text-sm border border-gray-300 rounded px-2 py-1"
               />
               <span className="text-gray-500">-</span>
               <input
                 type="number"
                 placeholder="Max"
-                value={priceRange[1]}
-                onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
+                value={value.priceRange[1]}
+                onChange={(e) => {
+                  const nextRange: [number, number] = [value.priceRange[0], Number(e.target.value)]
+                  onChange({ ...value, priceRange: nextRange })
+                }}
                 className="w-full text-sm border border-gray-300 rounded px-2 py-1"
               />
             </div>
@@ -107,7 +123,7 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
               ].map((range) => (
                 <button
                   key={range.label}
-                  onClick={() => setPriceRange([range.min, range.max])}
+                  onClick={() => onChange({ ...value, priceRange: [range.min, range.max] })}
                   className="block w-full text-left text-sm text-gray-600 hover:text-gold-600 py-1"
                 >
                   {range.label}
@@ -137,12 +153,18 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
                 <input
                   type="checkbox"
                   className="rounded border-gray-300 text-gold-500 focus:ring-gold-500"
-                  checked={selectedMaterials.includes(material)}
+                  checked={value.materials.includes(material)}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setSelectedMaterials([...selectedMaterials, material])
+                      onChange({
+                        ...value,
+                        materials: [...value.materials, material]
+                      })
                     } else {
-                      setSelectedMaterials(selectedMaterials.filter(m => m !== material))
+                      onChange({
+                        ...value,
+                        materials: value.materials.filter(m => m !== material)
+                      })
                     }
                   }}
                 />
@@ -170,7 +192,7 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
             {[4, 3, 2, 1].map((rating) => (
               <button
                 key={rating}
-                onClick={() => setMinRating(rating)}
+                onClick={() => onChange({ ...value, minRating: rating })}
                 className={`flex items-center w-full text-left p-2 rounded ${
                   minRating === rating ? 'bg-gold-50 text-gold-700' : 'hover:bg-gray-50'
                 }`}
@@ -197,10 +219,13 @@ export function FilterSidebar({ categories }: FilterSidebarProps) {
         variant="outline"
         className="w-full"
         onClick={() => {
-          setSelectedCategories([])
-          setSelectedMaterials([])
-          setPriceRange([0, 500000])
-          setMinRating(0)
+          onClear?.()
+          onChange({
+            categories: [],
+            materials: [],
+            priceRange: [0, 500000],
+            minRating: 0,
+          })
         }}
       >
         Clear All Filters

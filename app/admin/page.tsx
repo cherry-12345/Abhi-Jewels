@@ -11,14 +11,9 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (isAuthenticated && checkAuth()) {
-      router.push('/admin/dashboard')
+      router.replace('/admin/dashboard')
     }
   }, [isAuthenticated, checkAuth, router])
-
-  if (isAuthenticated) {
-    router.push('/admin/dashboard')
-    return null
-  }
 
   return <AdminLogin />
 }

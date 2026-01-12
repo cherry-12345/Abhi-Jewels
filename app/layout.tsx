@@ -3,6 +3,7 @@ import { Inter, Playfair_Display, Cormorant_Garamond } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
 import { Toaster } from 'react-hot-toast'
+import { WhatsAppButton } from '@/components/ui/whatsapp-button'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -96,6 +97,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-gradient-to-br from-diamond via-white to-platinum-50">
         <Providers>
           {children}
+          <WhatsAppButton />
           <Toaster 
             position="top-right"
             toastOptions={{

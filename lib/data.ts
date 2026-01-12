@@ -230,7 +230,11 @@ export const allProducts: Product[] = [
     description: 'Beautiful sapphire surrounded by diamonds in white gold setting.',
     price: 95000,
     originalPrice: 110000,
-    images: ['https://images.unsplash.com/photo-1544376664-80b17f09d399?w=800'],
+    images: [
+      'https://images.unsplash.com/photo-1544376664-80b17f09d399?w=800',
+      'https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=800',
+      'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800'
+    ],
     category: 'Rings',
     subcategory: 'Fashion Rings',
     material: '18k White Gold, Sapphire, Diamond',

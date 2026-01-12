@@ -39,41 +39,47 @@ export function AdminProducts() {
   const categories = ['all', ...Array.from(new Set(products.map(p => p.category)))]
 
   const handleAddProduct = () => {
-    // Comprehensive validation
-    const errors: string[] = []
-    
-    if (!formData.name.trim()) errors.push('Product name is required')
-    if (formData.name.length > 100) errors.push('Product name must be less than 100 characters')
-    if (formData.price <= 0) errors.push('Price must be greater than 0')
-    if (formData.price > 10000000) errors.push('Price cannot exceed ₹1 crore')
-    if (formData.stockQuantity < 0) errors.push('Stock quantity cannot be negative')
-    if (formData.stockQuantity > 10000) errors.push('Stock quantity cannot exceed 10,000')
-    if (!formData.category) errors.push('Category is required')
-    if (!formData.material.trim()) errors.push('Material is required')
-    if (formData.description.length > 1000) errors.push('Description must be less than 1000 characters')
-    
-    if (errors.length > 0) {
-      toast.error(errors[0])
-      return
+    try {
+      // Comprehensive validation
+      const errors: string[] = []
+      
+      if (!formData.name.trim()) errors.push('Product name is required')
+      if (formData.name.length > 100) errors.push('Product name must be less than 100 characters')
+      if (formData.price <= 0) errors.push('Price must be greater than 0')
+      if (formData.price > 10000000) errors.push('Price cannot exceed ₹1 crore')
+      if (formData.stockQuantity < 0) errors.push('Stock quantity cannot be negative')
+      if (formData.stockQuantity > 10000) errors.push('Stock quantity cannot exceed 10,000')
+      if (!formData.category) errors.push('Category is required')
+      if (!formData.material.trim()) errors.push('Material is required')
+      if (formData.description.length > 1000) errors.push('Description must be less than 1000 characters')
+      if (!formData.images[0] || !formData.images[0].trim()) errors.push('Product image URL is required')
+      
+      if (errors.length > 0) {
+        toast.error(errors[0])
+        return
+      }
+      
+      // Sanitize inputs
+      const sanitizedData = {
+        ...formData,
+        name: formData.name.trim(),
+        material: formData.material.trim(),
+        description: formData.description.trim(),
+        certification: formData.certification.trim(),
+        tags: [],
+        featured: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+      
+      addProduct(sanitizedData)
+      toast.success('Product added successfully!')
+      setShowAddModal(false)
+      resetForm()
+    } catch (error) {
+      console.error('Error adding product:', error)
+      toast.error('Failed to add product. Please try again.')
     }
-    
-    // Sanitize inputs
-    const sanitizedData = {
-      ...formData,
-      name: formData.name.trim(),
-      material: formData.material.trim(),
-      description: formData.description.trim(),
-      certification: formData.certification.trim(),
-      tags: [],
-      featured: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }
-    
-    addProduct(sanitizedData)
-    toast.success('Product added successfully')
-    setShowAddModal(false)
-    resetForm()
   }
 
   const handleUpdateProduct = () => {

@@ -127,7 +127,13 @@ export function Header() {
 
             {/* Wishlist */}
             <Link href="/wishlist">
-              <Button variant="ghost" size="icon" className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative"
+                aria-label="wishlist"
+                data-testid="wishlist-button"
+              >
                 <Heart className="h-5 w-5" />
                 <ClientOnly>
                   {wishlistItemsCount > 0 && (
@@ -140,7 +146,14 @@ export function Header() {
             </Link>
 
             {/* Cart */}
-            <Button variant="ghost" size="icon" className="relative" onClick={toggleCart}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative"
+              onClick={toggleCart}
+              aria-label="cart"
+              data-testid="cart-button"
+            >
               <ShoppingBag className="h-5 w-5" />
               <ClientOnly>
                 {cartItemsCount > 0 && (
@@ -160,7 +173,13 @@ export function Header() {
 
             {/* Admin Panel */}
             <Link href="/admin">
-              <Button variant="outline" size="sm" className="hidden md:flex">
+              <Button
+                variant="outline"
+                size="sm"
+                className="hidden md:flex"
+                aria-label="admin"
+                data-testid="admin-button"
+              >
                 Admin
               </Button>
             </Link>

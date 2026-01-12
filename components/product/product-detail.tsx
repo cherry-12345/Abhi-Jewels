@@ -18,7 +18,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
   const [quantity, setQuantity] = useState(1)
   const [selectedSize, setSelectedSize] = useState('')
   
-  const { addItem } = useCartStore()
+  const { addItem, openCart } = useCartStore()
   const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlistStore()
   
   const isWishlisted = isInWishlist(product.id)
@@ -26,6 +26,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
   const handleAddToCart = () => {
     addItem(product, quantity, { size: selectedSize })
+    openCart()
   }
 
   const handleWishlistToggle = () => {
