@@ -194,7 +194,7 @@ export function FilterSidebar({ categories, value, onChange, onClear }: FilterSi
                 key={rating}
                 onClick={() => onChange({ ...value, minRating: rating })}
                 className={`flex items-center w-full text-left p-2 rounded ${
-                  minRating === rating ? 'bg-gold-50 text-gold-700' : 'hover:bg-gray-50'
+                  value.minRating === rating ? 'bg-gold-50 text-gold-700' : 'hover:bg-gray-50'
                 }`}
               >
                 <div className="flex">
