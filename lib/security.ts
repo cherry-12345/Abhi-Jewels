@@ -46,12 +46,26 @@ export const generateCSRFToken = (): string => {
   return crypto.randomUUID()
 }
 
+export const validateCSRFToken = (token: string, storedToken: string): boolean => {
+  return token === storedToken && token.length === 36 // UUID length
+}
+
 export const rateLimit = {
   attempts: new Map<string, { count: number; lastAttempt: number }>(),
   
   isAllowed(identifier: string, maxAttempts = 5, windowMs = 15 * 60 * 1000): boolean {
     const now = Date.now()
     const record = this.attempts.get(identifier)
+    
+    // Clean up old entries to prevent memory leaks
+    if (this.attempts.size > 10000) {
+      const cutoff = now - windowMs
+      for (const [key, value] of this.attempts.entries()) {
+        if (value.lastAttempt < cutoff) {
+          this.attempts.delete(key)
+        }
+      }
+    }
     
     if (!record || now - record.lastAttempt > windowMs) {
       this.attempts.set(identifier, { count: 1, lastAttempt: now })
@@ -65,5 +79,24 @@ export const rateLimit = {
     record.count++
     record.lastAttempt = now
     return true
+  },
+  
+  reset(identifier: string): void {
+    this.attempts.delete(identifier)
   }
+}
+
+export const sanitizeHTML = (html: string): string => {
+  return html
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;')
+}
+
+export const validatePhoneNumber = (phone: string): boolean => {
+  const phoneRegex = /^\+?[1-9]\d{1,14}$/
+  return phoneRegex.test(phone.replace(/[\s-]/g, ''))
 }

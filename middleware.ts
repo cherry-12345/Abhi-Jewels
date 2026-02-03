@@ -47,16 +47,26 @@ export function middleware(request: NextRequest) {
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
 
-  // Rate limiting for admin routes only
-  if (pathname.startsWith('/admin')) {
+  // Rate limiting for sensitive routes
+  if (pathname.startsWith('/admin') || pathname.startsWith('/api/')) {
     const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown'
-    const key = `admin_${ip}`
+    const key = `${pathname.startsWith('/admin') ? 'admin' : 'api'}_${ip}`
+    const maxRequests = pathname.startsWith('/admin') ? 100 : 1000
     
     // In production, use Redis or similar for distributed rate limiting
-    if (!isRateLimited(key)) {
-      return response
+    if (!isRateLimited(key, maxRequests)) {
+      response.headers.set('X-RateLimit-Limit', maxRequests.toString())
+      const remaining = getRateLimitRemaining(key, maxRequests)
+      response.headers.set('X-RateLimit-Remaining', remaining.toString())
     } else {
-      return new NextResponse('Too Many Requests', { status: 429 })
+      return new NextResponse('Too Many Requests - Please try again later', { 
+        status: 429,
+        headers: {
+          'Retry-After': '900', // 15 minutes
+          'X-RateLimit-Limit': maxRequests.toString(),
+          'X-RateLimit-Remaining': '0'
+        }
+      })
     }
   }
 
@@ -66,10 +76,9 @@ export function middleware(request: NextRequest) {
 // Simple in-memory rate limiting (use Redis in production)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
 
-function isRateLimited(key: string): boolean {
+function isRateLimited(key: string, maxRequests = 100): boolean {
   const now = Date.now()
   const windowMs = 15 * 60 * 1000 // 15 minutes
-  const maxRequests = 100
 
   // Cleanup expired entries to prevent memory leak
   if (rateLimitMap.size > 1000) {
@@ -93,6 +102,12 @@ function isRateLimited(key: string): boolean {
 
   record.count++
   return false
+}
+
+function getRateLimitRemaining(key: string, maxRequests = 100): number {
+  const record = rateLimitMap.get(key)
+  if (!record) return maxRequests
+  return Math.max(0, maxRequests - record.count)
 }
 
 export const config = {
