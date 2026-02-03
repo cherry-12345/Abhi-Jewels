@@ -73,6 +73,31 @@ export class CryptoManager {
     return newHash === hash
   }
 
+  // Simplified password verification - compares plaintext with stored hash
+  // In production, use bcrypt or similar library for password storage
+  static async verifyPasswordHash(plainPassword: string, storedHash: string): Promise<boolean> {
+    // storedHash should be in format: salt$hash
+    if (!storedHash.includes('$')) {
+      return false
+    }
+    
+    const [salt, hash] = storedHash.split('$')
+    const { hash: newHash } = await this.hashPassword(plainPassword, salt)
+    
+    // Constant-time comparison to prevent timing attacks
+    return this.constantTimeCompare(newHash, hash)
+  }
+
+  // Constant-time string comparison
+  private static constantTimeCompare(a: string, b: string): boolean {
+    if (a.length !== b.length) return false
+    let result = 0
+    for (let i = 0; i < a.length; i++) {
+      result |= a.charCodeAt(i) ^ b.charCodeAt(i)
+    }
+    return result === 0
+  }
+
   static generateSecureToken(): string {
     const array = new Uint8Array(32)
     crypto.getRandomValues(array)

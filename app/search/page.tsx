@@ -11,15 +11,17 @@ import { Search } from 'lucide-react'
 
 function SearchResults() {
   const searchParams = useSearchParams()
-  const query = searchParams.get('q') || ''
+  const query = (searchParams.get('q') || '').trim()
 
-  const results = allProducts.filter(product =>
-    product.name.toLowerCase().includes(query.toLowerCase()) ||
-    product.description.toLowerCase().includes(query.toLowerCase()) ||
-    product.category.toLowerCase().includes(query.toLowerCase()) ||
-    (product.material || '').toLowerCase().includes(query.toLowerCase()) ||
-    product.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
-  )
+  const results = query === '' 
+    ? []
+    : allProducts.filter(product =>
+      product.name.toLowerCase().includes(query.toLowerCase()) ||
+      product.description.toLowerCase().includes(query.toLowerCase()) ||
+      product.category.toLowerCase().includes(query.toLowerCase()) ||
+      (product.material || '').toLowerCase().includes(query.toLowerCase()) ||
+      product.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+    )
 
   return (
     <>

@@ -5,13 +5,13 @@ import { verifyJWT } from '@/lib/jwt'
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   
-  // Admin Panel Protection
+  // Admin Panel Protection - enforce in all non-test environments
   if (pathname.startsWith('/admin') && pathname !== '/admin') {
     // Check for authentication token
     const authToken = request.cookies.get('admin_auth_token')?.value
     
-    // Verify JWT token
-    if (process.env.NODE_ENV === 'production') {
+    // Only skip auth enforcement during testing
+    if (process.env.NODE_ENV !== 'test') {
       const adminSecret = process.env.ADMIN_SECRET
       
       if (!adminSecret || !authToken) {
@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(loginUrl)
       }
       
-      // Verify JWT signature instead of raw comparison
+      // Verify JWT signature using constant-time comparison
       try {
         const payload = await verifyJWT(authToken, adminSecret)
         if (!payload || payload.role !== 'admin') {

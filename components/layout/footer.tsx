@@ -134,8 +134,8 @@ export function Footer() {
                 </div>
               </div>
               <div className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-gold-400" />
-                <a href="mailto:info@ajabhijewels.com" className="text-gray-300 hover:text-white transition-colors">
+                <Mail className="h-5 w-5 text-gold-400" />
+                <a href="mailto:info@ajabhijewels.com" className="text-gray-300 hover:text-white transition-colors" aria-label="Email support">
                   Contact Support
                 </a>
               </div>

@@ -86,11 +86,9 @@ export function WhatsAppButton() {
         )}
       </button>
 
-      {/* Badge with unread indicator (optional) */}
+      {/* Pulsing indicator dot (optional) */}
       {!isExpanded && (
-        <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center border-2 border-white">
-          <span className="text-white text-xs font-bold">1</span>
-        </div>
+        <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse"></div>
       )}
     </div>
   )

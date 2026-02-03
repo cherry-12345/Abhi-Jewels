@@ -58,11 +58,18 @@ export const useAuthStore = create<AuthStore>()(
             return { success: false, message: 'Password too short' }
           }
           
-          // Secure credential verification with hashing
-          const { hash: storedHash, salt } = await CryptoManager.hashPassword('admin123', 'fixed-salt')
-          const { hash: inputHash } = await CryptoManager.hashPassword(sanitizedPassword, 'fixed-salt')
+          // Secure credential verification using environment variable
+          // Password should be stored as hashed value in env: ADMIN_PASSWORD=salt$hash
+          const storedPasswordHash = process.env.ADMIN_PASSWORD
           
-          if (sanitizedEmail === 'admin@ajabhijewels.com' && inputHash === storedHash) {
+          if (!storedPasswordHash) {
+            return { success: false, message: 'Server configuration error' }
+          }
+          
+          // Use constant-time comparison for password verification
+          const passwordMatch = await CryptoManager.verifyPasswordHash(sanitizedPassword, storedPasswordHash)
+          
+          if (sanitizedEmail === 'admin@ajabhijewels.com' && passwordMatch) {
             // Generate secure JWT token
             const sessionId = CryptoManager.generateSecureToken()
             const token = await JWTManager.sign({

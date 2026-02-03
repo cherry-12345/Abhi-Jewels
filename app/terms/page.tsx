@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { FileText, ShoppingCart, Package, CreditCard, UserCheck, AlertCircle } from 'lucide-react'
+import { FileText, ShoppingCart, Package, CreditCard, UserCheck, AlertCircle, Phone } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Terms of Service - AJ Abhi Jewels',
@@ -398,6 +398,14 @@ export default function TermsOfServicePage() {
                 <div>
                   <p className="font-semibold text-gray-900">Email</p>
                   <a href="mailto:legal@ajabhijewels.com" className="text-gold-600 hover:underline">legal@ajabhijewels.com</a>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <Phone className="h-5 w-5 text-gold-600 mt-1" />
+                <div>
+                  <p className="font-semibold text-gray-900">Phone</p>
+                  <a href="tel:+917947106192" className="text-gold-600 hover:underline">+91 7947 106 192</a>
                 </div>
               </div>
               

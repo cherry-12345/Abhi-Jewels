@@ -40,20 +40,32 @@ export default function CheckoutPage() {
     e.preventDefault()
     setLoading(true)
 
-    // Validate form
-    if (!formData.firstName || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.pincode) {
-      toast.error('Please fill all required fields')
+    try {
+      // Validate form
+      if (!formData.firstName || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.pincode) {
+        toast.error('Please fill all required fields')
+        return
+      }
+
+      // Submit order to API
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      if (!response.ok) {
+        throw new Error('Order submission failed')
+      }
+
+      toast.success('Order placed successfully!')
+      clearCart()
+      router.push('/account')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Order placement failed. Please try again.')
+    } finally {
       setLoading(false)
-      return
     }
-
-    // Simulate order processing
-    await new Promise(resolve => setTimeout(resolve, 2000))
-
-    toast.success('Order placed successfully!')
-    clearCart()
-    router.push('/account')
-    setLoading(false)
   }
 
   if (items.length === 0) {

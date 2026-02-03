@@ -100,20 +100,27 @@ export async function verifyJWT(token: string, secret?: string): Promise<{ role?
 
     // Create signature using the same algorithm
     const encoder = new TextEncoder()
-    const keyMaterial = secret || process.env.JWT_SECRET || 'change-in-production'
+    const keyMaterial = secret || process.env.JWT_SECRET
+    
+    if (!keyMaterial) {
+      throw new Error('JWT secret is not configured. Set JWT_SECRET environment variable.')
+    }
+    
     const key = await crypto.subtle.importKey(
       'raw',
       encoder.encode(keyMaterial),
       { name: 'HMAC', hash: 'SHA-256' },
       false,
-      ['sign']
+      ['sign', 'verify']
     )
 
+    // Use Web Crypto API for constant-time comparison
     const signatureData = await crypto.subtle.sign('HMAC', key, encoder.encode(`${encodedHeader}.${encodedPayload}`))
     const expectedSignature = btoa(String.fromCharCode(...Array.from(new Uint8Array(signatureData))))
       .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
     
-    if (signature !== expectedSignature) {
+    // Constant-time comparison to prevent timing attacks
+    if (signature.length !== expectedSignature.length || !constantTimeCompare(signature, expectedSignature)) {
       return null
     }
 
@@ -130,4 +137,14 @@ export async function verifyJWT(token: string, secret?: string): Promise<{ role?
   } catch {
     return null
   }
+}
+
+// Constant-time string comparison to prevent timing attacks
+function constantTimeCompare(a: string, b: string): boolean {
+  if (a.length !== b.length) return false
+  let result = 0
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i)
+  }
+  return result === 0
 }
