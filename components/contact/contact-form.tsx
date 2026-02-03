@@ -157,7 +157,7 @@ export function ContactForm() {
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <a
-            href="https://wa.me/917947106192"
+            href={`https://wa.me/${process.env.NEXT_PUBLIC_CONTACT_WHATSAPP || '917947106192'}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center space-x-2 p-3 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors"

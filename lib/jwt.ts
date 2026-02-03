@@ -88,3 +88,46 @@ export class JWTManager {
     return atob(padded)
   }
 }
+
+// Simplified JWT verification function for middleware
+export async function verifyJWT(token: string, secret?: string): Promise<{ role?: string } | null> {
+  try {
+    const [encodedHeader, encodedPayload, signature] = token.split('.')
+    
+    if (!encodedHeader || !encodedPayload || !signature) {
+      return null
+    }
+
+    // Create signature using the same algorithm
+    const encoder = new TextEncoder()
+    const keyMaterial = secret || process.env.JWT_SECRET || 'change-in-production'
+    const key = await crypto.subtle.importKey(
+      'raw',
+      encoder.encode(keyMaterial),
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['sign']
+    )
+
+    const signatureData = await crypto.subtle.sign('HMAC', key, encoder.encode(`${encodedHeader}.${encodedPayload}`))
+    const expectedSignature = btoa(String.fromCharCode(...Array.from(new Uint8Array(signatureData))))
+      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
+    
+    if (signature !== expectedSignature) {
+      return null
+    }
+
+    // Decode and verify payload
+    const base64 = encodedPayload.replace(/-/g, '+').replace(/_/g, '/')
+    const padded = base64.padEnd(base64.length + (4 - base64.length % 4) % 4, '=')
+    const payload = JSON.parse(atob(padded))
+    
+    if (payload.exp < Math.floor(Date.now() / 1000)) {
+      return null
+    }
+
+    return payload
+  } catch {
+    return null
+  }
+}

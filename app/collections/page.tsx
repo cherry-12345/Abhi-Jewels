@@ -46,7 +46,7 @@ export default function CollectionsPage() {
         product.name.toLowerCase().includes(queryParam) ||
         product.description.toLowerCase().includes(queryParam) ||
         product.category.toLowerCase().includes(queryParam) ||
-        product.material.toLowerCase().includes(queryParam)
+        (product.material || '').toLowerCase().includes(queryParam)
 
       return categoryMatches && materialMatches && priceMatches && ratingMatches && searchMatches
     })

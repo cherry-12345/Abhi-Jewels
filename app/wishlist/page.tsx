@@ -54,7 +54,7 @@ export default function WishlistPage() {
                   <div className="relative aspect-square">
                     <Link href={`/products/${item.product.id}`}>
                       <Image
-                        src={item.product.images[0]}
+                        src={item.product.images && item.product.images.length > 0 ? item.product.images[0] : '/placeholder-product.jpg'}
                         alt={item.product.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"

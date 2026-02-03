@@ -41,7 +41,7 @@ export default function CheckoutPage() {
     setLoading(true)
 
     // Validate form
-    if (!formData.firstName || !formData.email || !formData.phone || !formData.address) {
+    if (!formData.firstName || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.pincode) {
       toast.error('Please fill all required fields')
       setLoading(false)
       return

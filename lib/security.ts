@@ -47,7 +47,17 @@ export const generateCSRFToken = (): string => {
 }
 
 export const validateCSRFToken = (token: string, storedToken: string): boolean => {
-  return token === storedToken && token.length === 36 // UUID length
+  // Constant-time comparison to prevent timing attacks
+  if (token.length !== 36 || storedToken.length !== 36) {
+    return false
+  }
+  
+  // Manual constant-time comparison
+  let result = 0
+  for (let i = 0; i < 36; i++) {
+    result |= token.charCodeAt(i) ^ storedToken.charCodeAt(i)
+  }
+  return result === 0
 }
 
 export const rateLimit = {

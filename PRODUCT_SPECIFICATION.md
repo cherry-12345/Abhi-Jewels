@@ -114,7 +114,7 @@ AJ Abhi Jewels is a modern, full-featured e-commerce platform for selling premiu
 - **JWT Tokens**: Secure session management
 - **Rate Limiting**: Protection against brute force
 - **Session Timeout**: Auto-logout after inactivity
-- **Password Security**: SHA-256 hashing
+- **Password Security**: Modern password hashing using Argon2id, bcrypt, or scrypt with secure parameters (salt per-password, secure random salt length ≥16 bytes, Argon2 memory≥19MB/iterations≥2/parallelism≥1 or bcrypt cost≥12). Use vetted libraries (libsodium/argon2 or bcrypt libs) - never implement custom password hashing
 
 #### 3.2.2 Dashboard
 - **Overview**: Key metrics and statistics
@@ -315,7 +315,7 @@ GET    /api/auth/verify       - Verify session
 
 ### 7.2 Authentication
 - JWT tokens with 24-hour expiry
-- SHA-256 password hashing
+- Modern password hashing (Argon2id/bcrypt/scrypt) with secure parameters
 - Rate limiting (100 requests/15 min)
 - Session validation
 - Auto-logout on inactivity

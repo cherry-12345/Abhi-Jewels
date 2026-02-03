@@ -66,8 +66,8 @@ export const generateStructuredData = (type: 'Organization' | 'Product' | 'Local
         logo: 'https://ajabhijewels.com/logo.png',
         contactPoint: {
           '@type': 'ContactPoint',
-          telephone: '+91-794*******',
           contactType: 'customer service',
+          email: 'info@ajabhijewels.com'
         },
         address: {
           '@type': 'PostalAddress',

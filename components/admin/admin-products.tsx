@@ -66,6 +66,7 @@ export function AdminProducts() {
         material: formData.material.trim(),
         description: formData.description.trim(),
         certification: formData.certification.trim(),
+        images: formData.images.map((img: string) => img.trim()),
         tags: [],
         featured: false,
         createdAt: new Date().toISOString(),

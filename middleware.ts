@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { verifyJWT } from '@/lib/jwt'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   
   // Admin Panel Protection
@@ -9,12 +10,25 @@ export function middleware(request: NextRequest) {
     // Check for authentication token
     const authToken = request.cookies.get('admin_auth_token')?.value
     
-    // In production, verify JWT token against ADMIN_SECRET environment variable
+    // Verify JWT token
     if (process.env.NODE_ENV === 'production') {
       const adminSecret = process.env.ADMIN_SECRET
       
-      // If no admin secret is set or token doesn't match, redirect to admin login
-      if (!adminSecret || !authToken || authToken !== adminSecret) {
+      if (!adminSecret || !authToken) {
+        const loginUrl = request.nextUrl.clone()
+        loginUrl.pathname = '/admin'
+        return NextResponse.redirect(loginUrl)
+      }
+      
+      // Verify JWT signature instead of raw comparison
+      try {
+        const payload = await verifyJWT(authToken, adminSecret)
+        if (!payload || payload.role !== 'admin') {
+          const loginUrl = request.nextUrl.clone()
+          loginUrl.pathname = '/admin'
+          return NextResponse.redirect(loginUrl)
+        }
+      } catch {
         const loginUrl = request.nextUrl.clone()
         loginUrl.pathname = '/admin'
         return NextResponse.redirect(loginUrl)
@@ -47,11 +61,11 @@ export function middleware(request: NextRequest) {
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
 
-  // Rate limiting for sensitive routes
-  if (pathname.startsWith('/admin') || pathname.startsWith('/api/')) {
+  // Rate limiting for admin routes
+  if (pathname.startsWith('/admin')) {
     const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown'
-    const key = `${pathname.startsWith('/admin') ? 'admin' : 'api'}_${ip}`
-    const maxRequests = pathname.startsWith('/admin') ? 100 : 1000
+    const key = `admin_${ip}`
+    const maxRequests = 100
     
     // In production, use Redis or similar for distributed rate limiting
     if (!isRateLimited(key, maxRequests)) {

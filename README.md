@@ -172,9 +172,11 @@ theme: {
 
 **AJ Abhi Jewels**
 - **Address**: Shop No 05, Skanda Business Park, Rajvihar, Kurnool - 518001
-- **Phone**: 794*******
-- **WhatsApp**: 794*******
+- **Phone**: Contact via website form or WhatsApp
+- **WhatsApp**: Available through website contact form
 - **Hours**: Open until 9:00 PM daily
+
+> **Note**: Contact numbers are configured via environment variables (`NEXT_PUBLIC_CONTACT_PHONE` and `NEXT_PUBLIC_CONTACT_WHATSAPP`) for security. See `.env.example` for configuration.
 
 ## 🤝 Contributing
 

@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 export function WhatsAppButton() {
   const [isExpanded, setIsExpanded] = useState(false)
-  const phoneNumber = '917947106192' // Remove + and spaces for WhatsApp link (actual number kept for functionality)
+  const phoneNumber = process.env.NEXT_PUBLIC_CONTACT_WHATSAPP || '917947106192' // Read from env variable
   const defaultMessage = 'Hi! I am interested in your jewelry collection.'
 
   const handleWhatsAppClick = () => {

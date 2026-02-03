@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Search, ShoppingBag, Heart, User, Menu, X, Phone } from 'lucide-react'
+import { Search, ShoppingBag, Heart, User, Menu, X, Mail } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCartStore } from '@/store/cart'
 import { useWishlistStore } from '@/store/wishlist'
@@ -56,7 +56,7 @@ export function Header() {
             </div>
             <div className="flex items-center space-x-4">
               <a href="mailto:info@ajabhijewels.com" className="flex items-center space-x-1 hover:text-gold-200">
-                <Phone className="h-4 w-4" />
+                <Mail className="h-4 w-4" />
                 <span>Contact Us</span>
               </a>
               <span>|</span>
