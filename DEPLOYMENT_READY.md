@@ -46,7 +46,7 @@ Create `.env.local` with:
 JWT_SECRET=your-secret-key-here
 ENCRYPTION_KEY=your-32-char-key-here
 ADMIN_SECRET=your-secure-admin-secret-for-jwt
-ADMIN_PASSWORD=salt$hash-format-password
+ADMIN_PASSWORD=your-hashed-password
 NEXT_PUBLIC_BASE_URL=https://ajabhijewels.com
 
 # Optional

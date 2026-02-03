@@ -110,10 +110,14 @@ export default function WishlistPage() {
                         min="1"
                         max={item.product.inStock ? 10 : 0}
                         value={selectedQuantities[item.product.id] || 1}
-                        onChange={(e) => setSelectedQuantities({
-                          ...selectedQuantities,
-                          [item.product.id]: Math.max(1, parseInt(e.target.value) || 1)
-                        })}
+                        onChange={(e) => {
+                          const parsed = parseInt(e.target.value, 10)
+                          const clamped = Math.min(Math.max(parsed, 1), 10)
+                          setSelectedQuantities({
+                            ...selectedQuantities,
+                            [item.product.id]: isNaN(clamped) ? 1 : clamped
+                          })
+                        }}
                         className="w-12 px-2 py-1 border border-gray-300 rounded text-center text-sm"
                         disabled={!item.product.inStock}
                       />

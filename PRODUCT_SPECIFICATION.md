@@ -402,9 +402,13 @@ GET    /api/auth/verify       - Verify session
 # Required
 JWT_SECRET=<secret>
 ENCRYPTION_KEY=<32-char-key>
-ADMIN_EMAIL=<email>
-ADMIN_PASSWORD_HASH=<hash>
-ADMIN_SALT=<salt>
+ADMIN_SECRET=<admin-jwt-secret>
+ADMIN_PASSWORD=<salt$hash-format>
+
+# Public Contact
+NEXT_PUBLIC_CONTACT_EMAIL=<email>
+NEXT_PUBLIC_CONTACT_PHONE=<phone>
+NEXT_PUBLIC_CONTACT_WHATSAPP=<whatsapp>
 
 # Optional
 DATABASE_URL=<url>

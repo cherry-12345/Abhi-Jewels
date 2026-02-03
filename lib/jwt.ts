@@ -44,7 +44,8 @@ export class JWTManager {
 
       const expectedSignature = await this.createSignature(`${encodedHeader}.${encodedPayload}`)
       
-      if (signature !== expectedSignature) {
+      // Use constant-time comparison to prevent timing attacks
+      if (!this.constantTimeCompare(signature, expectedSignature)) {
         return null
       }
 
@@ -59,6 +60,16 @@ export class JWTManager {
       return null
     }
   }
+
+  private static constantTimeCompare(a: string, b: string): boolean {
+    const maxLength = Math.max(a.length, b.length)
+    let result = a.length ^ b.length
+    for (let i = 0; i < maxLength; i++) {
+      const aChar = i < a.length ? a.charCodeAt(i) : 0
+      const bChar = i < b.length ? b.charCodeAt(i) : 0
+      result |= aChar ^ bChar
+    }
+    return result === 0
 
   private static async createSignature(data: string): Promise<string> {
     const encoder = new TextEncoder()

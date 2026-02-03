@@ -27,7 +27,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body: LoginRequest = await request.json()
+    let body: LoginRequest
+    try {
+      body = await request.json()
+    } catch (parseError) {
+      return NextResponse.json(
+        { success: false, message: 'Invalid JSON in request body' },
+        { status: 400 }
+      )
+    }
+
     const { email, password } = body
 
     // Input validation

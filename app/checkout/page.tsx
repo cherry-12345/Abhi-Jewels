@@ -93,19 +93,15 @@ export default function CheckoutPage() {
 
       toast.success('Order placed successfully!')
       
-      // Await navigation and only clear cart after successful redirect
-      const navigationSuccess = await router.push(`/order-confirmation?orderId=${orderId}`)
+      // Persist order data to sessionStorage as backup before navigation
+      sessionStorage.setItem('pendingOrder', JSON.stringify({
+        result,
+        orderId
+      }))
       
-      if (navigationSuccess !== false) {
-        clearCart()
-      } else {
-        // If navigation fails, persist order data to sessionStorage for recovery
-        sessionStorage.setItem('pendingOrder', JSON.stringify({
-          result,
-          orderId
-        }))
-        toast.error('Navigation failed, but order was created. Saving for recovery...')
-      }
+      // Clear cart and navigate
+      clearCart()
+      router.push(`/order-confirmation?orderId=${orderId}`)
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Order placement failed. Please try again.')
     } finally {

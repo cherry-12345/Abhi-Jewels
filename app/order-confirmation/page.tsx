@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
@@ -30,7 +30,7 @@ interface OrderDetails {
   createdAt: string
 }
 
-export default function OrderConfirmationPage() {
+function OrderConfirmationContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const orderId = searchParams.get('orderId')
@@ -46,9 +46,13 @@ export default function OrderConfirmationPage() {
       return
     }
 
+    const controller = new AbortController()
+
     const fetchOrder = async () => {
       try {
-        const response = await fetch(`/api/orders/${orderId}`)
+        const response = await fetch(`/api/orders/${orderId}`, {
+          signal: controller.signal
+        })
         
         if (!response.ok) {
           throw new Error('Failed to fetch order details')
@@ -57,6 +61,10 @@ export default function OrderConfirmationPage() {
         const data = await response.json()
         setOrder(data.order || data)
       } catch (err) {
+        // Ignore abort errors from cleanup
+        if (err instanceof Error && err.name === 'AbortError') {
+          return
+        }
         console.error('Error fetching order:', err)
         setError(err instanceof Error ? err.message : 'Failed to load order details')
         toast.error('Could not load order details')
@@ -66,21 +74,33 @@ export default function OrderConfirmationPage() {
     }
 
     fetchOrder()
+
+    return () => {
+      controller.abort()
+    }
   }, [orderId])
 
-  if (loading) {
-    return (
-      <div className="min-h-screen">
-        <Header />
-        <main className="py-20">
-          <div className="container mx-auto px-4 text-center">
-            <p>Loading order details...</p>
-          </div>
-        </main>
-        <Footer />
+export default function OrderConfirmationPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <OrderConfirmationContent />
+    </Suspense>
+  )
+}
+
+function OrderConfirmationContent() {
+
+const LoadingFallback = () => (
+  <div className="min-h-screen">
+    <Header />
+    <main className="py-20">
+      <div className="container mx-auto px-4 text-center">
+        <p>Loading order details...</p>
       </div>
-    )
-  }
+    </main>
+    <Footer />
+  </div>
+)
 
   if (error || !order) {
     return (
@@ -226,5 +246,13 @@ export default function OrderConfirmationPage() {
       </main>
       <Footer />
     </div>
+  )
+}
+
+export default function OrderConfirmationPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <OrderConfirmationContent />
+    </Suspense>
   )
 }

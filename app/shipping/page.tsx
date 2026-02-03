@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { Truck, Package, Shield, Clock, MapPin, IndianRupee } from 'lucide-react'
+import { CONTACT_PHONE, formatPhoneForDisplay, formatPhoneForTel } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Shipping Information - AJ Abhi Jewels',
@@ -245,10 +246,10 @@ export default function ShippingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
-              href="tel:+917947106192"
+              href={`tel:${formatPhoneForTel(CONTACT_PHONE)}`}
               className="inline-flex items-center justify-center bg-white text-gold-700 px-6 py-3 rounded-lg font-semibold hover:bg-gold-50 transition-colors"
             >
-              Call: +91 7947106192
+              Call: {formatPhoneForDisplay(CONTACT_PHONE)}
             </a>
             <a 
               href="/contact"

@@ -11,12 +11,24 @@ export const formatPhoneForTel = (phone: string): string => {
   return cleanPhone.startsWith('91') ? `+${cleanPhone}` : `+91${cleanPhone}`
 }
 
-// Format phone for display (mask or show full)
+/**
+ * Format phone number for display
+ * Expects Indian phone numbers with 91 country code and 10-digit local number
+ * @param phone - Phone number (with or without country code)
+ * @param masked - Whether to mask the number (default: false)
+ * @returns Formatted phone string (e.g., "+91 XXXXX XXXXX" or "+91 XX*****")
+ */
 export const formatPhoneForDisplay = (phone: string, masked = false): string => {
   const cleaned = phone.replace(/\D/g, '')
   const formatted = cleaned.startsWith('91') ? cleaned : `91${cleaned}`
   const countryCode = formatted.slice(0, 2)
   const localNumber = formatted.slice(2)
+  
+  // Validate local number length
+  if (localNumber.length !== 10) {
+    // Return safe fallback if invalid length
+    return `+${countryCode} ${localNumber}`
+  }
   
   if (masked) {
     // Mask local number, keeping country code visible

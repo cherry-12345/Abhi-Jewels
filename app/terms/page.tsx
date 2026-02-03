@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { FileText, ShoppingCart, Package, CreditCard, UserCheck, AlertCircle, Phone } from 'lucide-react'
+import { CONTACT_PHONE, formatPhoneForDisplay, formatPhoneForTel } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Terms of Service - AJ Abhi Jewels',
@@ -405,7 +406,7 @@ export default function TermsOfServicePage() {
                 <Phone className="h-5 w-5 text-gold-600 mt-1" />
                 <div>
                   <p className="font-semibold text-gray-900">Phone</p>
-                  <a href="tel:+917947106192" className="text-gold-600 hover:underline">+91 7947 106 192</a>
+                  <a href={`tel:${formatPhoneForTel(CONTACT_PHONE)}`} className="text-gold-600 hover:underline">{formatPhoneForDisplay(CONTACT_PHONE)}</a>
                 </div>
               </div>
               
