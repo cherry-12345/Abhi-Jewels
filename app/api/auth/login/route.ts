@@ -54,12 +54,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Sanitize inputs
+    // Sanitize email only (password must remain unchanged for authentication)
     const sanitizedEmail = sanitizeInput(email)
-    const sanitizedPassword = sanitizeInput(password)
 
     // Password validation
-    if (sanitizedPassword.length < 6) {
+    if (password.trim().length < 6) {
       return NextResponse.json(
         { success: false, message: 'Invalid credentials' },
         { status: 401 }
@@ -86,7 +85,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify password using constant-time comparison
-    const passwordMatch = await CryptoManager.verifyPasswordHash(sanitizedPassword, storedPasswordHash)
+    const passwordMatch = await CryptoManager.verifyPasswordHash(password.trim(), storedPasswordHash)
 
     if (!passwordMatch) {
       return NextResponse.json(
@@ -105,8 +104,8 @@ export async function POST(request: NextRequest) {
       sessionId
     })
 
-    // Return token in response (client will store in httpOnly cookie via middleware)
-    return NextResponse.json({
+    // Set token as httpOnly cookie for secure storage
+    const response = NextResponse.json({
       success: true,
       token,
       user: {
@@ -116,6 +115,18 @@ export async function POST(request: NextRequest) {
         loginTime: new Date().toISOString()
       }
     })
+
+    response.cookies.set({
+      name: 'admin_auth_token',
+      value: token,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 24 * 60 * 60 // 24 hours
+    })
+
+    return response
   } catch (error) {
     console.error('Login error:', error)
     return NextResponse.json(

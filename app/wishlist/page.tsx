@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { CartSidebar } from '@/components/cart/cart-sidebar'
@@ -12,12 +13,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export default function WishlistPage() {
+  const [mounted, setMounted] = useState(false)
   const wishlistStore = useWishlistStore()
   const cartStore = useCartStore()
   
-  const items = wishlistStore?.items || []
-  const removeItem = wishlistStore?.removeItem || (() => {})
-  const addItem = cartStore?.addItem || (() => {})
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+  
+  const items = mounted ? wishlistStore.items : []
+  const removeItem = mounted ? wishlistStore.removeItem : (() => {})
+  const addItem = mounted ? cartStore.addItem : (() => {})
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -41,11 +47,11 @@ export default function WishlistPage() {
               <p className="text-gray-600 mb-8">
                 Save your favorite items to your wishlist and shop them later
               </p>
-              <Link href="/collections">
-                <Button variant="luxury" size="lg">
+              <Button asChild variant="luxury" size="lg">
+                <Link href="/collections">
                   Explore Collections
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -63,9 +69,10 @@ export default function WishlistPage() {
                     </Link>
                     <button
                       onClick={() => removeItem(item.product.id)}
+                      aria-label={`Remove ${item.product.name} from wishlist`}
                       className="absolute top-3 right-3 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-red-50 transition-colors"
                     >
-                      <X className="h-5 w-5 text-red-500" />
+                      <X className="h-5 w-5 text-red-500" aria-hidden="true" />
                     </button>
                   </div>
 

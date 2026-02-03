@@ -49,7 +49,7 @@ export class ErrorBoundary extends Component<Props, State> {
               We're sorry for the inconvenience. Please try refreshing the page.
             </p>
             {this.state.error && process.env.NODE_ENV === 'development' && (
-              <div className="mb-6 p-4 bg-gray-100 rounded-lg text-left" role="alert" aria-live="polite">
+              <div className="mb-6 p-4 bg-gray-100 rounded-lg text-left">
                 <p className="text-sm font-mono text-red-600 break-all">
                   {this.state.error.message}
                 </p>

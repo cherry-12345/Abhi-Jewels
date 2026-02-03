@@ -90,7 +90,7 @@ export class JWTManager {
 }
 
 // Simplified JWT verification function for middleware
-export async function verifyJWT(token: string, secret?: string): Promise<{ role?: string } | null> {
+export async function verifyJWT(token: string, secret?: string): Promise<{ role?: string; [key: string]: any } | null> {
   try {
     const [encodedHeader, encodedPayload, signature] = token.split('.')
     
@@ -120,7 +120,7 @@ export async function verifyJWT(token: string, secret?: string): Promise<{ role?
       .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
     
     // Constant-time comparison to prevent timing attacks
-    if (signature.length !== expectedSignature.length || !constantTimeCompare(signature, expectedSignature)) {
+    if (!constantTimeCompare(signature, expectedSignature)) {
       return null
     }
 
@@ -141,10 +141,12 @@ export async function verifyJWT(token: string, secret?: string): Promise<{ role?
 
 // Constant-time string comparison to prevent timing attacks
 function constantTimeCompare(a: string, b: string): boolean {
-  if (a.length !== b.length) return false
-  let result = 0
-  for (let i = 0; i < a.length; i++) {
-    result |= a.charCodeAt(i) ^ b.charCodeAt(i)
+  const maxLength = Math.max(a.length, b.length)
+  let result = a.length ^ b.length // XOR lengths into result
+  for (let i = 0; i < maxLength; i++) {
+    const aChar = i < a.length ? a.charCodeAt(i) : 0
+    const bChar = i < b.length ? b.charCodeAt(i) : 0
+    result |= aChar ^ bChar
   }
   return result === 0
 }

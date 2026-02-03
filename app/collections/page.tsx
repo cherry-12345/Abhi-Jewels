@@ -22,15 +22,26 @@ export default function CollectionsPage() {
 
   const categoryIdToName = useMemo(() => {
     const map = new Map<string, string>()
-    categories.forEach(cat => map.set(cat.id, cat.name))
+    categories.forEach(cat => {
+      map.set(cat.id, cat.name)
+      // Add child categories to map for nested filtering
+      if (cat.children && Array.isArray(cat.children)) {
+        cat.children.forEach(child => {
+          map.set(child.id, child.name)
+        })
+      }
+    })
     return map
-  }, [])
+  }, [categories])
 
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
       const categoryMatches =
         filters.categories.length === 0 ||
-        filters.categories.some((id) => categoryIdToName.get(id) === product.category)
+        filters.categories.some((id) => {
+          const categoryName = categoryIdToName.get(id)
+          return categoryName === product.category || categoryName === product.subcategory
+        })
 
       const materialMatches =
         filters.materials.length === 0 ||

@@ -102,7 +102,7 @@ Or connect your GitHub repo to Vercel dashboard.
 ## 📞 Support
 
 - **Email**: info@ajabhijewels.com
-- **Phone**: 794*******
+- **Phone**: +91-XXXX-XXXXXX
 - **Location**: Kurnool, Andhra Pradesh
 
 ---

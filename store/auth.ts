@@ -69,9 +69,43 @@ export const useAuthStore = create<AuthStore>()(
         })
       })
 
-      const result = await response.json()
 
-      if (!result.success || !result.token) {
+      let result
+      let errorBody = ''
+      
+      try {
+        // Read body once and try to parse as JSON
+        const bodyText = await response.clone().text()
+        errorBody = bodyText
+        
+        try {
+          result = JSON.parse(bodyText)
+        } catch {
+          // If JSON parsing fails, use raw text
+          result = { success: false, message: bodyText }
+        }
+      } catch {
+        errorBody = 'Unable to read response body'
+        result = { success: false, message: errorBody }
+      }
+      
+      if (!response.ok || !result.success) {
+        // Handle failed login attempts
+        const newAttempts = state.loginAttempts + 1
+        const shouldLock = newAttempts >= 5
+        
+        set({
+          loginAttempts: newAttempts,
+          lastLoginAttempt: now,
+          isLocked: shouldLock
+        })
+
+        return { 
+          success: false, 
+          message: result.message || `Request failed with status ${response.status}` 
+        }
+      }
+      if (!response.ok || !result.success) {
         // Handle failed login attempts
         const newAttempts = state.loginAttempts + 1
         const shouldLock = newAttempts >= 5
@@ -85,18 +119,18 @@ export const useAuthStore = create<AuthStore>()(
         return { success: false, message: result.message || 'Login failed' }
       }
 
-      // Authentication successful - store token and user info
+      // Authentication successful - store user info
       const sessionId = CryptoManager.generateSecureToken()
-      set({ 
-        isAuthenticated: true, 
+      set({
+        isAuthenticated: true,
         user: {
           name: result.user.name,
           email: result.user.email,
           role: result.user.role,
-          loginTime: result.user.loginTime,
-          sessionId
+          sessionId,
+          loginTime: result.user.loginTime
         },
-        token: result.token,
+        token: result.token || null,
         loginAttempts: 0,
         isLocked: false
       })

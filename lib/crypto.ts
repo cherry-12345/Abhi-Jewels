@@ -81,7 +81,9 @@ export class CryptoManager {
       return false
     }
     
-    const [salt, hash] = storedHash.split('$')
+    const splitIndex = storedHash.indexOf('$')
+    const salt = storedHash.substring(0, splitIndex)
+    const hash = storedHash.substring(splitIndex + 1)
     const { hash: newHash } = await this.hashPassword(plainPassword, salt)
     
     // Constant-time comparison to prevent timing attacks

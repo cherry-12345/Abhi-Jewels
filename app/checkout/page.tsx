@@ -51,6 +51,7 @@ export default function CheckoutPage() {
       // Submit order to API with customer details and order items
       const totals = {
         subtotal,
+        shipping,
         tax,
         total
       }
@@ -248,13 +249,19 @@ export default function CheckoutPage() {
                   {items.map((item) => (
                     <div key={item.id} className="flex space-x-3">
                       <div className="relative w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                        <Image
-                          src={item.product.images[0]}
-                          alt={item.product.name}
-                          fill
-                          className="object-cover"
-                          sizes="64px"
-                        />
+                        {item.product.images && item.product.images[0] ? (
+                          <Image
+                            src={item.product.images[0]}
+                            alt={item.product.name}
+                            fill
+                            className="object-cover"
+                            sizes="64px"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
+                            <span className="text-xs">No Image</span>
+                          </div>
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-900 truncate">{item.product.name}</p>

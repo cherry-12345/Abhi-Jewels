@@ -9,6 +9,48 @@ import { formatPrice } from '@/lib/utils'
 import { Product } from '@/types'
 import toast from 'react-hot-toast'
 
+// Validation helper function
+function validateProductData(formData: any): string[] {
+  const errors: string[] = []
+  
+  // Safely normalize inputs with defaults
+  const name = (formData?.name ?? '').toString().trim()
+  const material = (formData?.material ?? '').toString().trim()
+  const description = (formData?.description ?? '').toString()
+  const price = Number(formData?.price)
+  const stockQuantity = Number(formData?.stockQuantity)
+  const images = Array.isArray(formData?.images) ? formData.images : []
+  
+  if (!name) errors.push('Product name is required')
+  if (name.length > 100) errors.push('Product name must be less than 100 characters')
+  if (!Number.isFinite(price) || price <= 0) errors.push('Price must be greater than 0')
+  if (price > 10000000) errors.push('Price cannot exceed ₹1 crore')
+  if (!Number.isFinite(stockQuantity) || stockQuantity < 0) errors.push('Stock quantity cannot be negative')
+  if (stockQuantity > 10000) errors.push('Stock quantity cannot exceed 10,000')
+  if (!formData?.category) errors.push('Category is required')
+  if (!material) errors.push('Material is required')
+  if (description.length > 1000) errors.push('Description must be less than 1000 characters')
+  if (!images.length || !(images[0] ?? '').toString().trim()) errors.push('Product image URL is required')
+  
+  return errors
+}
+
+// Sanitization helper function
+function sanitizeProductData(formData: any, existingProduct?: any) {
+  return {
+    ...formData,
+    name: (formData?.name ?? '').toString().trim(),
+    material: (formData?.material ?? '').toString().trim(),
+    description: (formData?.description ?? '').toString().trim(),
+    certification: (formData?.certification ?? '').toString().trim(),
+    images: (Array.isArray(formData?.images) ? formData.images : []).map((img: any) => (img ?? '').toString().trim()),
+    tags: existingProduct?.tags ?? [],
+    featured: existingProduct?.featured ?? false,
+    createdAt: existingProduct?.createdAt ?? new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  }
+}
+
 export function AdminProducts() {
   const { products, addProduct, updateProduct, deleteProduct } = useProductStore()
   const [searchTerm, setSearchTerm] = useState('')
@@ -40,38 +82,16 @@ export function AdminProducts() {
 
   const handleAddProduct = () => {
     try {
-      // Comprehensive validation
-      const errors: string[] = []
-      
-      if (!formData.name.trim()) errors.push('Product name is required')
-      if (formData.name.length > 100) errors.push('Product name must be less than 100 characters')
-      if (formData.price <= 0) errors.push('Price must be greater than 0')
-      if (formData.price > 10000000) errors.push('Price cannot exceed ₹1 crore')
-      if (formData.stockQuantity < 0) errors.push('Stock quantity cannot be negative')
-      if (formData.stockQuantity > 10000) errors.push('Stock quantity cannot exceed 10,000')
-      if (!formData.category) errors.push('Category is required')
-      if (!formData.material.trim()) errors.push('Material is required')
-      if (formData.description.length > 1000) errors.push('Description must be less than 1000 characters')
-      if (!formData.images[0] || !formData.images[0].trim()) errors.push('Product image URL is required')
+      // Validate product data
+      const errors = validateProductData(formData)
       
       if (errors.length > 0) {
         toast.error(errors[0])
         return
       }
       
-      // Sanitize inputs
-      const sanitizedData = {
-        ...formData,
-        name: formData.name.trim(),
-        material: formData.material.trim(),
-        description: formData.description.trim(),
-        certification: formData.certification.trim(),
-        images: formData.images.map((img: string) => img.trim()),
-        tags: [],
-        featured: false,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      }
+      // Sanitize inputs (no existing product for new products)
+      const sanitizedData = sanitizeProductData(formData)
       
       addProduct(sanitizedData)
       toast.success('Product added successfully!')
@@ -85,7 +105,19 @@ export function AdminProducts() {
 
   const handleUpdateProduct = () => {
     if (!editingProduct) return
-    updateProduct(editingProduct.id, formData)
+    
+    // Validate product data
+    const errors = validateProductData(formData)
+    
+    if (errors.length > 0) {
+      toast.error(errors[0])
+      return
+    }
+    
+    // Sanitize inputs (pass existing product to preserve createdAt, tags, featured)
+    const sanitizedData = sanitizeProductData(formData, editingProduct)
+    
+    updateProduct(editingProduct.id, sanitizedData)
     toast.success('Product updated successfully')
     setEditingProduct(null)
     resetForm()

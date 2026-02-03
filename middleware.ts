@@ -20,9 +20,10 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(loginUrl)
       }
       
-      // Verify JWT signature using constant-time comparison
+      // Verify JWT signature using JWT_SECRET (same secret used for token signing)
       try {
-        const payload = await verifyJWT(authToken, adminSecret)
+        const jwtSecret = process.env.JWT_SECRET
+        const payload = await verifyJWT(authToken, jwtSecret)
         if (!payload || payload.role !== 'admin') {
           const loginUrl = request.nextUrl.clone()
           loginUrl.pathname = '/admin'

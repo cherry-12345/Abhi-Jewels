@@ -46,11 +46,10 @@ Once connected, every push to `main` branch will auto-deploy.
 Add these in Vercel Dashboard → Settings → Environment Variables:
 
 ```env
+NEXT_PUBLIC_BASE_URL=https://your-domain.com
 JWT_SECRET=your-secret-key
 ENCRYPTION_KEY=your-32-char-key
-ADMIN_EMAIL=admin@ajabhijewels.com
-ADMIN_PASSWORD_HASH=your-hash
-ADMIN_SALT=your-salt
+ADMIN_PASSWORD=your-hashed-admin-password-salt$hash
 ```
 
 ---

@@ -97,8 +97,18 @@ export function FilterSidebar({ categories, value, onChange, onClear }: FilterSi
                 placeholder="Min"
                 value={value.priceRange[0]}
                 onChange={(e) => {
-                  const nextRange: [number, number] = [Number(e.target.value), value.priceRange[1]]
+                  const inputValue = e.target.value
+                  const newMin = inputValue === '' ? 0 : Number(inputValue)
+                  const currentMax = value.priceRange[1]
+                  const nextMin = Math.min(newMin, currentMax)
+                  const nextRange: [number, number] = [nextMin, currentMax]
                   onChange({ ...value, priceRange: nextRange })
+                }}
+                onBlur={(e) => {
+                  if (e.target.value === '') {
+                    const nextRange: [number, number] = [0, value.priceRange[1]]
+                    onChange({ ...value, priceRange: nextRange })
+                  }
                 }}
                 className="w-full text-sm border border-gray-300 rounded px-2 py-1"
               />
@@ -108,8 +118,18 @@ export function FilterSidebar({ categories, value, onChange, onClear }: FilterSi
                 placeholder="Max"
                 value={value.priceRange[1]}
                 onChange={(e) => {
-                  const nextRange: [number, number] = [value.priceRange[0], Number(e.target.value)]
+                  const inputValue = e.target.value
+                  const newMax = inputValue === '' ? 1000000 : Number(inputValue)
+                  const currentMin = value.priceRange[0]
+                  const nextMax = Math.max(newMax, currentMin)
+                  const nextRange: [number, number] = [currentMin, nextMax]
                   onChange({ ...value, priceRange: nextRange })
+                }}
+                onBlur={(e) => {
+                  if (e.target.value === '') {
+                    const nextRange: [number, number] = [value.priceRange[0], 1000000]
+                    onChange({ ...value, priceRange: nextRange })
+                  }
                 }}
                 className="w-full text-sm border border-gray-300 rounded px-2 py-1"
               />
