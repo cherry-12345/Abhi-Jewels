@@ -46,7 +46,7 @@ export function ContactInfo() {
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-gold-600"
               >
-                {formatPhoneForDisplay(CONTACT_PHONE)}
+                {formatPhoneForDisplay(CONTACT_WHATSAPP)}
               </a>
             </div>
           </div>

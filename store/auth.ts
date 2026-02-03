@@ -107,6 +107,19 @@ export const useAuthStore = create<AuthStore>()(
       }
 
       // Authentication successful - store user info
+      // Validate that user object exists before accessing properties
+      if (!result.user) {
+        console.error('Login response missing user object')
+        set({
+          isAuthenticated: false,
+          user: null,
+          token: null,
+          loginAttempts: 0,
+          isLocked: false
+        })
+        return { success: false, message: 'Invalid login response: missing user data' }
+      }
+      
       // Use server-provided sessionId instead of generating new one client-side
       const sessionId = result.user.sessionId || null
       set({

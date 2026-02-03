@@ -18,6 +18,7 @@ function validateProductData(formData: any): string[] {
   const material = (formData?.material ?? '').toString().trim()
   const description = (formData?.description ?? '').toString()
   const price = Number(formData?.price)
+  const originalPrice = Number(formData?.originalPrice)
   const stockQuantity = Number(formData?.stockQuantity)
   const images = Array.isArray(formData?.images) ? formData.images : []
   
@@ -25,6 +26,11 @@ function validateProductData(formData: any): string[] {
   if (name.length > 100) errors.push('Product name must be less than 100 characters')
   if (!Number.isFinite(price) || price <= 0) errors.push('Price must be greater than 0')
   if (price > 10000000) errors.push('Price cannot exceed ₹1 crore')
+  if (formData?.originalPrice !== '' && formData?.originalPrice !== undefined) {
+    if (!Number.isFinite(originalPrice) || originalPrice < 0) errors.push('Original price must be a valid non-negative number')
+    if (originalPrice < price) errors.push('Original price must be greater than or equal to price')
+    if (originalPrice > 10000000) errors.push('Original price cannot exceed ₹1 crore')
+  }
   if (!Number.isFinite(stockQuantity) || stockQuantity < 0) errors.push('Stock quantity cannot be negative')
   if (stockQuantity > 10000) errors.push('Stock quantity cannot exceed 10,000')
   if (!formData?.category) errors.push('Category is required')

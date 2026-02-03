@@ -11,14 +11,18 @@ export default function AdminLogoutPage() {
   useEffect(() => {
     // Clear server-side cookie first
     fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
-      .then(() => {
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorText = await response.text().catch(() => 'Unknown error')
+          throw new Error(`Logout failed with status ${response.status}: ${errorText}`)
+        }
         // Then clear client-side state
         logout()
         // Finally redirect
         router.replace('/admin')
       })
       .catch((error) => {
-        console.error('Logout error:', error)
+        console.error('Logout error:', error instanceof Error ? error.message : error)
         // Still clear client state and redirect even if cookie clear fails
         logout()
         router.replace('/admin')
