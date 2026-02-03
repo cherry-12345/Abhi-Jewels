@@ -10,7 +10,7 @@ export default function AdminLogoutPage() {
 
   useEffect(() => {
     // Clear server-side cookie first
-    fetch('/api/auth/logout', { method: 'POST' })
+    fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
       .then(() => {
         // Then clear client-side state
         logout()

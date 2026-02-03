@@ -44,8 +44,8 @@ function sanitizeProductData(formData: any, existingProduct?: any) {
     description: (formData?.description ?? '').toString().trim(),
     certification: (formData?.certification ?? '').toString().trim(),
     images: (Array.isArray(formData?.images) ? formData.images : []).map((img: any) => (img ?? '').toString().trim()),
-    tags: existingProduct?.tags ?? [],
-    featured: existingProduct?.featured ?? false,
+    tags: formData?.tags ?? existingProduct?.tags ?? [],
+    featured: formData?.featured ?? existingProduct?.featured ?? false,
     createdAt: existingProduct?.createdAt ?? new Date().toISOString(),
     updatedAt: new Date().toISOString()
   }

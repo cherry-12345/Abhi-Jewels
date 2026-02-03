@@ -13,16 +13,21 @@ export const formatPhoneForTel = (phone: string): string => {
 
 // Format phone for display (mask or show full)
 export const formatPhoneForDisplay = (phone: string, masked = false): string => {
-  if (masked) {
-    const cleaned = phone.replace(/\D/g, '')
-    return `${cleaned.slice(0, 3)}*******`
-  }
-  // Return in readable format: +91 XXXXX XXXXX
   const cleaned = phone.replace(/\D/g, '')
   const formatted = cleaned.startsWith('91') ? cleaned : `91${cleaned}`
   const countryCode = formatted.slice(0, 2)
-  const firstPart = formatted.slice(2, 7)
-  const secondPart = formatted.slice(7)
+  const localNumber = formatted.slice(2)
+  
+  if (masked) {
+    // Mask local number, keeping country code visible
+    const visibleDigits = Math.max(2, Math.floor(localNumber.length / 3))
+    const maskedPart = '*'.repeat(localNumber.length - visibleDigits)
+    const visiblePart = localNumber.slice(0, visibleDigits)
+    return `+${countryCode} ${visiblePart}${maskedPart}`
+  }
+  // Return in readable format: +91 XXXXX XXXXX
+  const firstPart = localNumber.slice(0, 5)
+  const secondPart = localNumber.slice(5)
   return `+${countryCode} ${firstPart} ${secondPart}`
 }
 

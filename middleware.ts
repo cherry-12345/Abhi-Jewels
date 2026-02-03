@@ -12,9 +12,7 @@ export async function middleware(request: NextRequest) {
     
     // Only skip auth enforcement during testing
     if (process.env.NODE_ENV !== 'test') {
-      const adminSecret = process.env.ADMIN_SECRET
-      
-      if (!adminSecret || !authToken) {
+      if (!authToken) {
         const loginUrl = request.nextUrl.clone()
         loginUrl.pathname = '/admin'
         return NextResponse.redirect(loginUrl)

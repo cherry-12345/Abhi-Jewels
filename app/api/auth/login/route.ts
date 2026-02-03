@@ -45,8 +45,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Rate limiting (per IP)
-    const ip = request.headers.get('x-forwarded-for') || 'unknown'
+    // Rate limiting (per IP) - parse first IP from x-forwarded-for header
+    const ipHeader = request.headers.get('x-forwarded-for')
+    const ip = ipHeader ? ipHeader.split(',')[0].trim() : 'unknown'
     if (!rateLimit.isAllowed(`login:${ip}`)) {
       return NextResponse.json(
         { success: false, message: 'Too many login attempts. Please try again later.' },
@@ -57,8 +58,8 @@ export async function POST(request: NextRequest) {
     // Sanitize email only (password must remain unchanged for authentication)
     const sanitizedEmail = sanitizeInput(email)
 
-    // Password validation
-    if (password.trim().length < 6) {
+    // Password validation (minimum 8 characters, consistent with validatePassword in lib/security.ts)
+    if (password.trim().length < 8) {
       return NextResponse.json(
         { success: false, message: 'Invalid credentials' },
         { status: 401 }

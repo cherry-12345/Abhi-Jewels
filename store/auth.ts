@@ -105,22 +105,10 @@ export const useAuthStore = create<AuthStore>()(
           message: result.message || `Request failed with status ${response.status}` 
         }
       }
-      if (!response.ok || !result.success) {
-        // Handle failed login attempts
-        const newAttempts = state.loginAttempts + 1
-        const shouldLock = newAttempts >= 5
-        
-        set({
-          loginAttempts: newAttempts,
-          lastLoginAttempt: now,
-          isLocked: shouldLock
-        })
-
-        return { success: false, message: result.message || 'Login failed' }
-      }
 
       // Authentication successful - store user info
-      const sessionId = CryptoManager.generateSecureToken()
+      // Use server-provided sessionId instead of generating new one client-side
+      const sessionId = result.user.sessionId || null
       set({
         isAuthenticated: true,
         user: {

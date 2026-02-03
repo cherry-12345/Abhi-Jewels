@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { RefreshCw, Package, CheckCircle, AlertCircle, Clock, Shield } from 'lucide-react'
+import { CONTACT_PHONE, CONTACT_EMAIL, formatPhoneForDisplay, formatPhoneForTel } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Returns & Exchanges - AJ Abhi Jewels',
@@ -169,8 +170,8 @@ export default function ReturnsPage() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">Contact Us</h3>
                   <p className="text-gray-600">
-                    Call us at <a href="tel:+917947106192" className="text-gold-600 hover:underline">+91 7947106192</a> or 
-                    email <a href="mailto:info@ajabhijewels.com" className="text-gold-600 hover:underline">info@ajabhijewels.com</a> within 
+                    Call us at <a href={`tel:${formatPhoneForTel(CONTACT_PHONE)}`} className="text-gold-600 hover:underline">{formatPhoneForDisplay(CONTACT_PHONE)}</a> or 
+                    email <a href={`mailto:${CONTACT_EMAIL}`} className="text-gold-600 hover:underline">{CONTACT_EMAIL}</a> within 
                     7 days of receiving your order.
                   </p>
                 </div>
@@ -267,13 +268,13 @@ export default function ReturnsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
-              href="tel:+917947106192"
+              href={`tel:${formatPhoneForTel(CONTACT_PHONE)}`}
               className="inline-flex items-center justify-center bg-white text-gold-700 px-6 py-3 rounded-lg font-semibold hover:bg-gold-50 transition-colors"
             >
-              Call: +91 7947106192
+              Call: {formatPhoneForDisplay(CONTACT_PHONE)}
             </a>
             <a 
-              href="mailto:info@ajabhijewels.com"
+              href={`mailto:${CONTACT_EMAIL}`}
               className="inline-flex items-center justify-center bg-gold-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gold-800 transition-colors"
             >
               Email Us

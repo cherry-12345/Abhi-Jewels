@@ -193,8 +193,8 @@ This project is proprietary software owned by AJ Abhi Jewels.
 
 For technical support or business inquiries:
 - **Email**: info@ajabhijewels.com
-- **Phone**: 794*******
-- **WhatsApp**: 794*******
+- **Phone**: See website for contact details
+- **WhatsApp**: See website for contact details
 
 ---
 

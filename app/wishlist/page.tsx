@@ -14,6 +14,7 @@ import Link from 'next/link'
 
 export default function WishlistPage() {
   const [mounted, setMounted] = useState(false)
+  const [selectedQuantities, setSelectedQuantities] = useState<Record<string, number>>({})
   const wishlistStore = useWishlistStore()
   const cartStore = useCartStore()
   
@@ -24,6 +25,11 @@ export default function WishlistPage() {
   const items = mounted ? wishlistStore.items : []
   const removeItem = mounted ? wishlistStore.removeItem : (() => {})
   const addItem = mounted ? cartStore.addItem : (() => {})
+  
+  const handleAddToCart = (itemId: string, product: any) => {
+    const quantity = selectedQuantities[itemId] || 1
+    addItem(product, quantity)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -86,7 +92,7 @@ export default function WishlistPage() {
                       </h3>
                     </Link>
 
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between mb-3">
                       <span className="text-lg font-bold text-gray-900">
                         {formatPrice(item.product.price)}
                       </span>
@@ -96,9 +102,25 @@ export default function WishlistPage() {
                         </span>
                       )}
                     </div>
+                    
+                    <div className="mb-3 flex items-center gap-2">
+                      <label className="text-sm text-gray-600">Qty:</label>
+                      <input
+                        type="number"
+                        min="1"
+                        max={item.product.inStock ? 10 : 0}
+                        value={selectedQuantities[item.product.id] || 1}
+                        onChange={(e) => setSelectedQuantities({
+                          ...selectedQuantities,
+                          [item.product.id]: Math.max(1, parseInt(e.target.value) || 1)
+                        })}
+                        className="w-12 px-2 py-1 border border-gray-300 rounded text-center text-sm"
+                        disabled={!item.product.inStock}
+                      />
+                    </div>
 
                     <Button
-                      onClick={() => addItem(item.product)}
+                      onClick={() => handleAddToCart(item.product.id, item.product)}
                       variant="luxury"
                       className="w-full"
                       disabled={!item.product.inStock}

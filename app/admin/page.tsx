@@ -15,5 +15,10 @@ export default function AdminPage() {
     }
   }, [isAuthenticated, checkAuth, router])
 
+  // Only show login if not authenticated, otherwise show null to avoid flash
+  if (isAuthenticated && checkAuth()) {
+    return null
+  }
+
   return <AdminLogin />
 }

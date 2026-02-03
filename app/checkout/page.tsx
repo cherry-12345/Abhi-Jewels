@@ -48,6 +48,22 @@ export default function CheckoutPage() {
         return
       }
 
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(formData.email)) {
+        toast.error('Please enter a valid email address')
+        setLoading(false)
+        return
+      }
+
+      // Validate phone format (basic check for 10 digits)
+      const phoneRegex = /^[0-9]{10}$/
+      if (!phoneRegex.test(formData.phone.replace(/\D/g, ''))) {
+        toast.error('Please enter a valid phone number')
+        setLoading(false)
+        return
+      }
+
       // Submit order to API with customer details and order items
       const totals = {
         subtotal,
@@ -72,9 +88,24 @@ export default function CheckoutPage() {
         throw new Error('Order submission failed')
       }
 
+      const result = await response.json()
+      const orderId = result.orderId || result.id
+
       toast.success('Order placed successfully!')
-      clearCart()
-      router.push('/account')
+      
+      // Await navigation and only clear cart after successful redirect
+      const navigationSuccess = await router.push(`/order-confirmation?orderId=${orderId}`)
+      
+      if (navigationSuccess !== false) {
+        clearCart()
+      } else {
+        // If navigation fails, persist order data to sessionStorage for recovery
+        sessionStorage.setItem('pendingOrder', JSON.stringify({
+          result,
+          orderId
+        }))
+        toast.error('Navigation failed, but order was created. Saving for recovery...')
+      }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Order placement failed. Please try again.')
     } finally {

@@ -5,6 +5,10 @@ import { ChevronDown, ChevronUp, Star } from 'lucide-react'
 import { Category } from '@/types'
 import { Button } from '@/components/ui/button'
 
+// Price range constants
+const DEFAULT_MIN_PRICE = 0
+const DEFAULT_MAX_PRICE = 500000
+
 interface FilterSidebarProps {
   categories: Category[]
   value: {
@@ -119,7 +123,7 @@ export function FilterSidebar({ categories, value, onChange, onClear }: FilterSi
                 value={value.priceRange[1]}
                 onChange={(e) => {
                   const inputValue = e.target.value
-                  const newMax = inputValue === '' ? 1000000 : Number(inputValue)
+                  const newMax = inputValue === '' ? DEFAULT_MAX_PRICE : Number(inputValue)
                   const currentMin = value.priceRange[0]
                   const nextMax = Math.max(newMax, currentMin)
                   const nextRange: [number, number] = [currentMin, nextMax]
@@ -127,7 +131,7 @@ export function FilterSidebar({ categories, value, onChange, onClear }: FilterSi
                 }}
                 onBlur={(e) => {
                   if (e.target.value === '') {
-                    const nextRange: [number, number] = [value.priceRange[0], 1000000]
+                    const nextRange: [number, number] = [value.priceRange[0], DEFAULT_MAX_PRICE]
                     onChange({ ...value, priceRange: nextRange })
                   }
                 }}
@@ -243,7 +247,7 @@ export function FilterSidebar({ categories, value, onChange, onClear }: FilterSi
           onChange({
             categories: [],
             materials: [],
-            priceRange: [0, 500000],
+            priceRange: [DEFAULT_MIN_PRICE, DEFAULT_MAX_PRICE],
             minRating: 0,
           })
         }}

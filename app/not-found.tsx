@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Home, Search, AlertCircle } from 'lucide-react'
+import { CONTACT_EMAIL } from '@/lib/constants'
 
 export default function NotFound() {
   return (
@@ -73,17 +74,10 @@ export default function NotFound() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center text-sm">
             <a 
-              href="tel:+917947106192" 
+              href={`mailto:${CONTACT_EMAIL}`} 
               className="text-gold-600 hover:text-gold-700 font-medium hover:underline"
             >
-              📞 Call: +91 7947106192
-            </a>
-            <span className="hidden sm:inline text-gray-300">|</span>
-            <a 
-              href="mailto:info@ajabhijewels.com" 
-              className="text-gold-600 hover:text-gold-700 font-medium hover:underline"
-            >
-              ✉️ Email: info@ajabhijewels.com
+              ✉️ Email: {CONTACT_EMAIL}
             </a>
           </div>
         </div>
