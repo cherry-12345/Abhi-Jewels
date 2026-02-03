@@ -70,6 +70,7 @@ export class JWTManager {
       result |= aChar ^ bChar
     }
     return result === 0
+  }
 
   private static async createSignature(data: string): Promise<string> {
     const encoder = new TextEncoder()

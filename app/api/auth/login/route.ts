@@ -117,7 +117,6 @@ export async function POST(request: NextRequest) {
     // Set token as httpOnly cookie for secure storage
     const response = NextResponse.json({
       success: true,
-      token,
       user: {
         name: 'Admin User',
         email: sanitizedEmail,

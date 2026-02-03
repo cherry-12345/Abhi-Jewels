@@ -103,25 +103,30 @@ export default function WishlistPage() {
                       )}
                     </div>
                     
-                    <div className="mb-3 flex items-center gap-2">
-                      <label className="text-sm text-gray-600">Qty:</label>
-                      <input
-                        type="number"
-                        min="1"
-                        max={item.product.inStock ? 10 : 0}
-                        value={selectedQuantities[item.product.id] || 1}
-                        onChange={(e) => {
-                          const parsed = parseInt(e.target.value, 10)
-                          const clamped = Math.min(Math.max(parsed, 1), 10)
-                          setSelectedQuantities({
-                            ...selectedQuantities,
-                            [item.product.id]: isNaN(clamped) ? 1 : clamped
-                          })
-                        }}
-                        className="w-12 px-2 py-1 border border-gray-300 rounded text-center text-sm"
-                        disabled={!item.product.inStock}
-                      />
-                    </div>
+                    {item.product.inStock ? (
+                      <div className="mb-3 flex items-center gap-2">
+                        <label className="text-sm text-gray-600">Qty:</label>
+                        <input
+                          type="number"
+                          min="1"
+                          max="10"
+                          value={selectedQuantities[item.product.id] || 1}
+                          onChange={(e) => {
+                            const parsed = parseInt(e.target.value, 10)
+                            const clamped = Math.min(Math.max(parsed, 1), 10)
+                            setSelectedQuantities({
+                              ...selectedQuantities,
+                              [item.product.id]: isNaN(clamped) ? 1 : clamped
+                            })
+                          }}
+                          className="w-12 px-2 py-1 border border-gray-300 rounded text-center text-sm"
+                        />
+                      </div>
+                    ) : (
+                      <div className="mb-3 px-3 py-1 bg-gray-100 rounded text-sm text-gray-500 font-medium inline-block">
+                        Out of Stock
+                      </div>
+                    )}
 
                     <Button
                       onClick={() => handleAddToCart(item.product.id, item.product)}

@@ -243,6 +243,7 @@ export function FilterSidebar({ categories, value, onChange, onClear }: FilterSi
         variant="outline"
         className="w-full"
         onClick={() => {
+          onClear?.()
           onChange({
             categories: [],
             materials: [],

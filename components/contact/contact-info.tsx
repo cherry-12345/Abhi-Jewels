@@ -41,7 +41,7 @@ export function ContactInfo() {
             <div>
               <h3 className="font-semibold text-gray-900 mb-1">WhatsApp</h3>
               <a 
-                href={`https://wa.me/${CONTACT_PHONE}`} 
+                href={`https://wa.me/${formatPhoneForTel(CONTACT_PHONE)}`} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-gold-600"
