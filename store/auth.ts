@@ -58,67 +58,55 @@ export const useAuthStore = create<AuthStore>()(
             return { success: false, message: 'Password too short' }
           }
           
-          // Secure credential verification using environment variable
-          // Password should be stored as hashed value in env: ADMIN_PASSWORD=salt$hash
-          const storedPasswordHash = process.env.ADMIN_PASSWORD
-          
-          if (!storedPasswordHash) {
-            return { success: false, message: 'Server configuration error' }
-          }
-          
-          // Use constant-time comparison for password verification
-          const passwordMatch = await CryptoManager.verifyPasswordHash(sanitizedPassword, storedPasswordHash)
-          
-          if (sanitizedEmail === 'admin@ajabhijewels.com' && passwordMatch) {
-            // Generate secure JWT token
-            const sessionId = CryptoManager.generateSecureToken()
-            const token = await JWTManager.sign({
-              sub: 'admin-user',
-              email: sanitizedEmail,
-              role: 'admin',
-              sessionId
-            })
-            
-            const user = { 
-              name: 'Admin User', 
-              email: sanitizedEmail, 
-              role: 'admin',
-              loginTime: new Date().toISOString(),
-              sessionId
-            }
-            
-            set({ 
-              isAuthenticated: true, 
-              user, 
-              token,
-              loginAttempts: 0,
-              isLocked: false
-            })
-            
-            return { success: true }
-          }
-          
-          // Handle failed login attempts
-          const newAttempts = state.loginAttempts + 1
-          const shouldLock = newAttempts >= 5
-          
-          set({
-            loginAttempts: newAttempts,
-            lastLoginAttempt: now,
-            isLocked: shouldLock
-          })
-          
-          return { 
-            success: false, 
-            message: shouldLock 
-              ? 'Account locked due to multiple failed attempts'
-              : `Invalid credentials. ${5 - newAttempts} attempts remaining.`
-          }
-        } catch (error) {
-          console.error('Login error:', error)
-          return { success: false, message: 'Login failed. Please try again.' }
-        }
-      },
+      // Call server-side login endpoint for secure credential verification
+      // The server reads ADMIN_PASSWORD from environment (never exposed to browser)
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: sanitizedEmail,
+          password: sanitizedPassword
+        })
+      })
+
+      const result = await response.json()
+
+      if (!result.success || !result.token) {
+        // Handle failed login attempts
+        const newAttempts = state.loginAttempts + 1
+        const shouldLock = newAttempts >= 5
+        
+        set({
+          loginAttempts: newAttempts,
+          lastLoginAttempt: now,
+          isLocked: shouldLock
+        })
+
+        return { success: false, message: result.message || 'Login failed' }
+      }
+
+      // Authentication successful - store token and user info
+      const sessionId = CryptoManager.generateSecureToken()
+      set({ 
+        isAuthenticated: true, 
+        user: {
+          name: result.user.name,
+          email: result.user.email,
+          role: result.user.role,
+          loginTime: result.user.loginTime,
+          sessionId
+        },
+        token: result.token,
+        loginAttempts: 0,
+        isLocked: false
+      })
+      
+      return { success: true }
+    } catch (error) {
+      console.error('Login error:', error)
+      return { success: false, message: 'Login failed. Please try again.' }
+    }
+  },
       
       logout: () => {
         // Secure logout with token invalidation

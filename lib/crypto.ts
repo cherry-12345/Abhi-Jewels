@@ -88,13 +88,17 @@ export class CryptoManager {
     return this.constantTimeCompare(newHash, hash)
   }
 
-  // Constant-time string comparison
+  // Constant-time string comparison - prevents timing attacks by always running the full loop
   private static constantTimeCompare(a: string, b: string): boolean {
-    if (a.length !== b.length) return false
-    let result = 0
-    for (let i = 0; i < a.length; i++) {
-      result |= a.charCodeAt(i) ^ b.charCodeAt(i)
+    const maxLength = Math.max(a.length, b.length)
+    let result = a.length ^ b.length // Compare lengths first in a way that doesn't early-exit
+    
+    for (let i = 0; i < maxLength; i++) {
+      const codeA = i < a.length ? a.charCodeAt(i) : 0
+      const codeB = i < b.length ? b.charCodeAt(i) : 0
+      result |= codeA ^ codeB
     }
+    
     return result === 0
   }
 

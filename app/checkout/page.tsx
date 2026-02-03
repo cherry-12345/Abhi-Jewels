@@ -44,14 +44,27 @@ export default function CheckoutPage() {
       // Validate form
       if (!formData.firstName || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.pincode) {
         toast.error('Please fill all required fields')
+        setLoading(false)
         return
       }
 
-      // Submit order to API
+      // Submit order to API with customer details and order items
+      const totals = {
+        subtotal,
+        tax,
+        total
+      }
+      
+      const payload = {
+        ...formData,
+        items,
+        totals
+      }
+      
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       })
 
       if (!response.ok) {

@@ -96,8 +96,14 @@ export const rateLimit = {
   }
 }
 
-export const sanitizeHTML = (html: string): string => {
-  return html
+/**
+ * Escapes HTML special characters to prevent XSS attacks
+ * Performs entity encoding on text that should not contain HTML
+ * @param text - The text to escape
+ * @returns The escaped text safe for HTML display
+ */
+export const escapeHTML = (text: string): string => {
+  return text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
@@ -105,6 +111,9 @@ export const sanitizeHTML = (html: string): string => {
     .replace(/'/g, '&#x27;')
     .replace(/\//g, '&#x2F;')
 }
+
+// Alias for backwards compatibility
+export const sanitizeHTML = escapeHTML
 
 export const validatePhoneNumber = (phone: string): boolean => {
   const phoneRegex = /^\+?[1-9]\d{1,14}$/

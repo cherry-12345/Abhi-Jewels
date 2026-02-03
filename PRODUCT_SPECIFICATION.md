@@ -513,7 +513,7 @@ SENTRY_DSN=<dsn>
 - Delivery time: 3-7 business days
 
 ### 16.3 Returns
-- 30-day return policy
+- 7-day return and exchange policy
 - Certified authentic jewelry
 - Quality guarantee
 

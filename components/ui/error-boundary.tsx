@@ -36,7 +36,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
       return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-          <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+          <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center" role="alert" aria-live="assertive">
             <div className="flex justify-center mb-4">
               <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
                 <AlertTriangle className="h-8 w-8 text-red-600" />
@@ -49,7 +49,7 @@ export class ErrorBoundary extends Component<Props, State> {
               We're sorry for the inconvenience. Please try refreshing the page.
             </p>
             {this.state.error && process.env.NODE_ENV === 'development' && (
-              <div className="mb-6 p-4 bg-gray-100 rounded-lg text-left">
+              <div className="mb-6 p-4 bg-gray-100 rounded-lg text-left" role="alert" aria-live="polite">
                 <p className="text-sm font-mono text-red-600 break-all">
                   {this.state.error.message}
                 </p>

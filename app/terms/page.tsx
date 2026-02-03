@@ -421,14 +421,6 @@ export default function TermsOfServicePage() {
                   </p>
                 </div>
               </div>
-              
-              <div className="flex items-start gap-3">
-                <UserCheck className="h-5 w-5 text-gold-600 mt-1" />
-                <div>
-                  <p className="font-semibold text-gray-900">Phone</p>
-                  <p className="text-gray-700">794*******</p>
-                </div>
-              </div>
             </div>
           </section>
 
