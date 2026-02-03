@@ -94,10 +94,10 @@ export function FAQ() {
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-4">
           <a
-            href="tel:+917947106192"
+            href="mailto:info@ajabhijewels.com"
             className="text-gold-600 hover:text-gold-700 font-medium"
           >
-            Call us at +91 7947106192
+            Contact us via email
           </a>
           <span className="hidden sm:inline text-gray-400">|</span>
           <a

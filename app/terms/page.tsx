@@ -418,7 +418,7 @@ export default function TermsOfServicePage() {
                 <UserCheck className="h-5 w-5 text-gold-600 mt-1" />
                 <div>
                   <p className="font-semibold text-gray-900">Phone</p>
-                  <a href="tel:+917947106192" className="text-gold-600 hover:underline">+91 7947106192</a>
+                  <p className="text-gray-700">794*******</p>
                 </div>
               </div>
             </div>

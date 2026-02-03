@@ -172,8 +172,8 @@ theme: {
 
 **AJ Abhi Jewels**
 - **Address**: Shop No 05, Skanda Business Park, Rajvihar, Kurnool - 518001
-- **Phone**: +91 7947106192
-- **WhatsApp**: +91 7947106192
+- **Phone**: 794*******
+- **WhatsApp**: 794*******
 - **Hours**: Open until 9:00 PM daily
 
 ## 🤝 Contributing
@@ -191,8 +191,8 @@ This project is proprietary software owned by AJ Abhi Jewels.
 
 For technical support or business inquiries:
 - **Email**: info@ajabhijewels.com
-- **Phone**: +91 7947106192
-- **WhatsApp**: +91 7947106192
+- **Phone**: 794*******
+- **WhatsApp**: 794*******
 
 ---
 

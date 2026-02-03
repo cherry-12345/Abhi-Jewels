@@ -135,8 +135,8 @@ export function Footer() {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-gold-400" />
-                <a href="tel:+917947106192" className="text-gray-300 hover:text-white transition-colors">
-                  +91 7947106192
+                <a href="mailto:info@ajabhijewels.com" className="text-gray-300 hover:text-white transition-colors">
+                  Contact Support
                 </a>
               </div>
               <div className="flex items-center space-x-3">

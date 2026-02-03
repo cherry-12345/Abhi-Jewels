@@ -29,7 +29,7 @@ export function LiveChat() {
     setTimeout(() => {
       const reply = {
         id: messages.length + 2,
-        text: 'Thank you for your message! Our jewelry expert will respond shortly. You can also call us at +91 7947106192 for immediate assistance.',
+        text: 'Thank you for your message! Our jewelry expert will respond shortly. You can also email us for immediate assistance.',
         sender: 'agent',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
@@ -115,9 +115,9 @@ export function LiveChat() {
               
               {/* Quick Actions */}
               <div className="flex space-x-2 mt-3">
-                <a href="tel:+917947106192" className="flex items-center space-x-1 text-xs text-gold-600 hover:text-gold-700">
-                  <Phone className="h-3 w-3" />
-                  <span>Call</span>
+                <a href="mailto:info@ajabhijewels.com" className="flex items-center space-x-1 text-xs text-gold-600 hover:text-gold-700">
+                  <Mail className="h-3 w-3" />
+                  <span>Email</span>
                 </a>
                 <a href="mailto:info@ajabhijewels.com" className="flex items-center space-x-1 text-xs text-gold-600 hover:text-gold-700">
                   <Mail className="h-3 w-3" />

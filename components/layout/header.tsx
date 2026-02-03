@@ -55,9 +55,9 @@ export function Header() {
               <span>Free shipping on orders above ₹50,000</span>
             </div>
             <div className="flex items-center space-x-4">
-              <a href="tel:+917947106192" className="flex items-center space-x-1 hover:text-gold-200">
+              <a href="mailto:info@ajabhijewels.com" className="flex items-center space-x-1 hover:text-gold-200">
                 <Phone className="h-4 w-4" />
-                <span>+91 7947106192</span>
+                <span>Contact Us</span>
               </a>
               <span>|</span>
               <span>Kurnool, Andhra Pradesh</span>

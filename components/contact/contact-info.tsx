@@ -26,9 +26,9 @@ export function ContactInfo() {
             <Phone className="h-6 w-6 text-gold-600 mt-1 flex-shrink-0" />
             <div>
               <h3 className="font-semibold text-gray-900 mb-1">Phone</h3>
-              <a href="tel:+917947106192" className="text-gray-600 hover:text-gold-600">
-                +91 7947106192
-              </a>
+              <p className="text-gray-600">
+                794*******
+              </p>
             </div>
           </div>
 
