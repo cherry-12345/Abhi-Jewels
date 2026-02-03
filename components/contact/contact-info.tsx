@@ -1,5 +1,5 @@
 import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react'
-import { CONTACT_PHONE, formatPhoneForDisplay, formatPhoneForTel } from '@/lib/constants'
+import { CONTACT_PHONE, CONTACT_WHATSAPP, formatPhoneForDisplay, formatPhoneForTel } from '@/lib/constants'
 
 export function ContactInfo() {
   return (
@@ -41,7 +41,7 @@ export function ContactInfo() {
             <div>
               <h3 className="font-semibold text-gray-900 mb-1">WhatsApp</h3>
               <a 
-                href={`https://wa.me/${formatPhoneForTel(CONTACT_PHONE)}`} 
+                href={`https://wa.me/${formatPhoneForTel(CONTACT_WHATSAPP)}`} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-gold-600"
