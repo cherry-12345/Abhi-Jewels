@@ -155,14 +155,7 @@ export function ContactForm() {
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
           Prefer to contact us directly?
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <a
-            href="tel:+917947106192"
-            className="flex items-center justify-center space-x-2 p-3 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors"
-          >
-            <Phone className="h-4 w-4" />
-            <span className="text-sm font-medium">Call Now</span>
-          </a>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <a
             href="https://wa.me/917947106192"
             target="_blank"
