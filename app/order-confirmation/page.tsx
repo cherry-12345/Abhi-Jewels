@@ -30,6 +30,18 @@ interface OrderDetails {
   createdAt: string
 }
 
+const LoadingFallback = () => (
+  <div className="min-h-screen">
+    <Header />
+    <main className="py-20">
+      <div className="container mx-auto px-4 text-center">
+        <p>Loading order details...</p>
+      </div>
+    </main>
+    <Footer />
+  </div>
+)
+
 function OrderConfirmationContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -80,27 +92,9 @@ function OrderConfirmationContent() {
     }
   }, [orderId])
 
-export default function OrderConfirmationPage() {
-  return (
-    <Suspense fallback={<LoadingFallback />}>
-      <OrderConfirmationContent />
-    </Suspense>
-  )
-}
-
-function OrderConfirmationContent() {
-
-const LoadingFallback = () => (
-  <div className="min-h-screen">
-    <Header />
-    <main className="py-20">
-      <div className="container mx-auto px-4 text-center">
-        <p>Loading order details...</p>
-      </div>
-    </main>
-    <Footer />
-  </div>
-)
+  if (loading) {
+    return <LoadingFallback />
+  }
 
   if (error || !order) {
     return (
